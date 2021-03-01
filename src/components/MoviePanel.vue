@@ -16,6 +16,7 @@
   z-index: 10;
   filter: none;
   position: relative;
+  color: white;
 }
 
 .no-movie-selected-panel {
@@ -33,6 +34,11 @@
   text-align: center;
   max-width: 50%;
 }
+
+li {
+  font-size: 12px;
+  list-style: disc;
+}
 </style>
 
 <template>
@@ -41,12 +47,30 @@
       class="movie-panel-content"
       v-if="selectedMovieData.movieIndexSelected !== -1"
     >
-      <h1>
-        {{ movies[selectedMovieData.movieIndexSelected].title }} <br />
-        Year:
-        {{ movies[selectedMovieData.movieIndexSelected].startYear }} <br />
-      </h1>
+      <h1>{{ movies[selectedMovieData.movieIndexSelected].title }} <br /></h1>
+      <h2>{{ movies[selectedMovieData.movieIndexSelected].type }}</h2>
+      <h2>
+        {{ movies[selectedMovieData.movieIndexSelected].startYear }} -
+        <span
+          v-if="movies[selectedMovieData.movieIndexSelected].endYear !== null"
+          >{{ movies[selectedMovieData.movieIndexSelected].endYear }}</span
+        >
+        <span v-else> ... </span>
+      </h2>
+      <h2>
+        {{ movies[selectedMovieData.movieIndexSelected].averageRating }}/10 out
+        of {{ movies[selectedMovieData.movieIndexSelected].votes }} votes
+      </h2>
+      <h3>Genres:</h3>
+      <li
+        v-for="(genre, index) in movies[selectedMovieData.movieIndexSelected]
+          .genres"
+        v-bind:key="index"
+      >
+        {{ genre }}
+      </li>
     </div>
+
     <div
       class="movie-panel-container"
       v-if="selectedMovieData.movieIndexSelected !== -1"

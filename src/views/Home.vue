@@ -14,25 +14,41 @@ body {
 ul {
   width: 100%;
 }
-li {
+li.movie-list-element {
   list-style: none;
   width: 100%;
   text-align: center;
   padding: 20px;
   font-size: 1.25em;
 }
+
 a {
   text-decoration: none;
+}
+
+a.movie-list-link {
+  padding: 10px;
   color: white;
   line-height: 2px;
+  border-bottom: 2px solid transparent;
+}
+
+a.movie-list-link:hover {
+  border-bottom: 2px solid white;
 }
 </style>
 <template>
   <div>
     <div id="list-of-movies">
       <ul>
-        <li v-for="(movie, index) in movies" v-bind:key="movie.id">
-          <a @click.prevent="selectMovie(index)" href="">{{ movie.title }}</a>
+        <li
+          class="movie-list-element"
+          v-for="(movie, index) in movies"
+          v-bind:key="movie.id"
+        >
+          <a class="movie-list-link" @click.prevent="selectMovie(index)" href=""
+            >{{ movie.title }} ({{ movie.startYear }})</a
+          >
         </li>
       </ul>
     </div>
