@@ -1,18 +1,72 @@
+<style>
+html,
+body {
+  height: 100%;
+  width: 100%;
+  background-color: #4a69bd;
+  color: white;
+}
+#list-of-movies {
+  width: 50%;
+  float: left;
+  text-align: center;
+}
+ul {
+  width: 100%;
+}
+li {
+  list-style: none;
+  width: 100%;
+  text-align: center;
+  padding: 20px;
+  font-size: 1.25em;
+}
+a {
+  text-decoration: none;
+  color: white;
+  line-height: 2px;
+}
+</style>
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+  <div>
+    <div id="list-of-movies">
+      <ul>
+        <li v-for="(movie, index) in movies" v-bind:key="movie.id">
+          <a @click.prevent="selectMovie(index)" href="">{{ movie.title }}</a>
+        </li>
+      </ul>
+    </div>
+    <div id="movie-info-panel">
+      <MoviePanel
+        v-bind:selected-movie-data="this.selectedMovieData"
+      ></MoviePanel>
+    </div>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from "@/components/HelloWorld.vue";
+import { searchResults } from "@/mocks/movies";
+import MoviePanel from "@/components/MoviePanel";
 
 export default {
   name: "Home",
+  methods: {
+    selectMovie: function(indexChosen) {
+      console.log(indexChosen);
+      this.selectedMovieData.movieIndexSelected = indexChosen;
+    }
+  },
+  data: function() {
+    return {
+      movies: searchResults.items,
+      selectedMovieData: {
+        movieIndexSelected: -1
+      }
+    };
+  },
+
   components: {
-    HelloWorld
+    MoviePanel: MoviePanel
   }
 };
 </script>
