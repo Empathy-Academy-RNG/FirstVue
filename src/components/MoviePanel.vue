@@ -10,12 +10,13 @@
   position: absolute;
   height: 100vh;
   width: 50%;
+  text-align: center;
 }
 
 .movie-panel-content {
-  z-index: 10;
+  width: 50%;
   filter: none;
-  position: relative;
+  position: fixed;
   color: white;
 }
 
@@ -24,6 +25,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  position: fixed;
+  width: 50%;
 }
 
 .no-movie-selected-panel h1 {
@@ -39,45 +42,65 @@ li {
   font-size: 12px;
   list-style: disc;
 }
+
+.genre-list-element {
+  border: 1px solid white;
+  display: inline;
+  padding: 0.5em;
+  margin: 10px;
+}
+
+.genre-list-element:hover {
+  color: black;
+  background-color: white;
+  cursor: pointer;
+}
+
+/* TRANSITIONS */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.6s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
 </style>
 
 <template>
   <div class="movie-panel-main">
-    <div
-      class="movie-panel-content"
-      v-if="selectedMovieData.movieIndexSelected !== -1"
-    >
-      <h1>{{ movies[selectedMovieData.movieIndexSelected].title }} <br /></h1>
-      <h2>{{ movies[selectedMovieData.movieIndexSelected].type }}</h2>
-      <h2>
-        {{ movies[selectedMovieData.movieIndexSelected].startYear }} -
-        <span
-          v-if="movies[selectedMovieData.movieIndexSelected].endYear !== null"
-          >{{ movies[selectedMovieData.movieIndexSelected].endYear }}</span
-        >
-        <span v-else> ... </span>
-      </h2>
-      <h2>
-        {{ movies[selectedMovieData.movieIndexSelected].averageRating }}/10 out
-        of {{ movies[selectedMovieData.movieIndexSelected].votes }} votes
-      </h2>
-      <h3>Genres:</h3>
-      <li
-        v-for="(genre, index) in movies[selectedMovieData.movieIndexSelected]
-          .genres"
-        v-bind:key="index"
+    <transition name="fade">
+      <div
+        class="movie-panel-content"
+        v-if="selectedMovieData.movieIndexSelected !== -1"
+        :key="movies[selectedMovieData.movieIndexSelected].id"
       >
-        {{ genre }}
-      </li>
-    </div>
-
-    <div
-      class="movie-panel-container"
-      v-if="selectedMovieData.movieIndexSelected !== -1"
-    ></div>
-    <div v-else class="no-movie-selected-panel">
-      <h1>Select a movie to see its details</h1>
-    </div>
+        <h1>{{ movies[selectedMovieData.movieIndexSelected].title }} <br /></h1>
+        <h2>{{ movies[selectedMovieData.movieIndexSelected].type }}</h2>
+        <h2>
+          {{ movies[selectedMovieData.movieIndexSelected].startYear }} -
+          <span v-if="movies[selectedMovieData.movieIndexSelected].endYear">{{
+            movies[selectedMovieData.movieIndexSelected].endYear
+          }}</span>
+          <span v-else> ongoing </span>
+        </h2>
+        <h2>
+          {{ movies[selectedMovieData.movieIndexSelected].averageRating }}/10
+          out of {{ movies[selectedMovieData.movieIndexSelected].votes }} votes
+        </h2>
+        <h3>Genres:</h3>
+        <li
+          class="genre-list-element"
+          v-for="(genre, index) in movies[selectedMovieData.movieIndexSelected]
+            .genres"
+          v-bind:key="index"
+        >
+          {{ genre }}
+        </li>
+      </div>
+      <div v-else class="no-movie-selected-panel">
+        <h1>Select a movie to see the details</h1>
+      </div>
+    </transition>
   </div>
 </template>
 

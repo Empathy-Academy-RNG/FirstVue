@@ -3,23 +3,25 @@ html,
 body {
   height: 100%;
   width: 100%;
-  background-color: #4a69bd;
+  background-image: linear-gradient(to right, blue, purple);
   color: white;
 }
 #list-of-movies {
-  width: 50%;
+  width: 49.5%;
   float: left;
   text-align: center;
+  border-right: 2px solid white;
 }
 ul {
   width: 100%;
 }
 li.movie-list-element {
   list-style: none;
-  width: 100%;
+  width: 80%;
   text-align: center;
   padding: 20px;
   font-size: 1.25em;
+  height: 100px;
 }
 
 a {
@@ -27,6 +29,7 @@ a {
 }
 
 a.movie-list-link {
+  font-size: 1em;
   padding: 10px;
   color: white;
   line-height: 2px;
@@ -35,6 +38,13 @@ a.movie-list-link {
 
 a.movie-list-link:hover {
   border-bottom: 2px solid white;
+}
+
+@media (max-width: 1000px) {
+  #list-of-movies {
+    width: 50%;
+    border: none;
+  }
 }
 </style>
 <template>
