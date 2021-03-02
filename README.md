@@ -1,4 +1,4 @@
-# academy-vue2
+# First Vue Project - Raúl Núñez García
 
 ## Project setup
 ```

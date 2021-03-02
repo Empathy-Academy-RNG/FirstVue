@@ -6,13 +6,6 @@
   text-align: center;
 }
 
-.movie-panel-container {
-  position: absolute;
-  height: 100vh;
-  width: 50%;
-  text-align: center;
-}
-
 .movie-panel-content {
   width: 50%;
   filter: none;
@@ -23,6 +16,7 @@
 .no-movie-selected-panel {
   height: 50vh;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   position: fixed;
@@ -36,6 +30,12 @@
   color: white;
   text-align: center;
   max-width: 50%;
+}
+
+.no-movie-selected-panel img{
+  margin-top: 30px;
+  width: 80px;
+  filter: invert(1);
 }
 
 li {
@@ -54,6 +54,16 @@ li {
   color: black;
   background-color: white;
   cursor: pointer;
+}
+
+.movie-poster-image{
+  width: 100px;
+}
+
+.no-movie-poster-image{
+  margin-top: 40px;
+  filter: invert(1);
+  width: 100px;
 }
 
 /* TRANSITIONS */
@@ -96,9 +106,16 @@ li {
         >
           {{ genre }}
         </li>
+        <br>
+        <img v-if="movies[selectedMovieData.movieIndexSelected].posterUrl" src="movies[selectedMovieData.movieIndexSelected].posterUrl"
+             alt="Poster of the movie" class="movie-poster-image">
+        <img v-else src="../assets/no-poster-image.png" alt="No poster found placeholder image"
+        class="no-movie-poster-image">
       </div>
       <div v-else class="no-movie-selected-panel">
         <h1>Select a movie to see the details</h1>
+        <br>
+        <img src="../assets/film.png" alt="Film placeholder image">
       </div>
     </transition>
   </div>
