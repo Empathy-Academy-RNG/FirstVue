@@ -33,7 +33,7 @@
 }
 
 .no-movie-selected-panel img{
-  margin-top: 30px;
+  margin-top: 100px;
   width: 80px;
   filter: invert(1);
 }
@@ -64,7 +64,9 @@ li {
   margin-top: 40px;
   filter: invert(1);
   width: 100px;
+  padding: 0;
 }
+
 
 /* TRANSITIONS */
 .fade-enter-active,
@@ -81,33 +83,32 @@ li {
     <transition name="fade">
       <div
         class="movie-panel-content"
-        v-if="selectedMovieData.movieIndexSelected !== -1"
-        :key="movies[selectedMovieData.movieIndexSelected].id"
+        v-if="selectedMovieData"
+        :key="selectedMovieData.id"
       >
-        <h1>{{ movies[selectedMovieData.movieIndexSelected].title }} <br /></h1>
-        <h2>{{ movies[selectedMovieData.movieIndexSelected].type }}</h2>
+        <h1>{{ selectedMovieData.title }} <br /></h1>
+        <h2>{{ selectedMovieData.type }}</h2>
         <h2>
-          {{ movies[selectedMovieData.movieIndexSelected].startYear }} -
-          <span v-if="movies[selectedMovieData.movieIndexSelected].endYear">{{
-            movies[selectedMovieData.movieIndexSelected].endYear
+          {{ selectedMovieData.startYear }} -
+          <span v-if="selectedMovieData.endYear">{{
+            selectedMovieData.endYear
           }}</span>
           <span v-else> ongoing </span>
         </h2>
         <h2>
-          {{ movies[selectedMovieData.movieIndexSelected].averageRating }}/10
-          out of {{ movies[selectedMovieData.movieIndexSelected].votes }} votes
+          {{ selectedMovieData.averageRating }}/10
+          out of {{ selectedMovieData.votes }} votes
         </h2>
         <h3>Genres:</h3>
         <li
           class="genre-list-element"
-          v-for="(genre, index) in movies[selectedMovieData.movieIndexSelected]
-            .genres"
+          v-for="(genre, index) in selectedMovieData.genres"
           v-bind:key="index"
         >
           {{ genre }}
         </li>
         <br>
-        <img v-if="movies[selectedMovieData.movieIndexSelected].posterUrl" src="movies[selectedMovieData.movieIndexSelected].posterUrl"
+        <img v-if="selectedMovieData.posterUrl" src="gottaDoThis.png"
              alt="Poster of the movie" class="movie-poster-image">
         <img v-else src="../assets/no-poster-image.png" alt="No poster found placeholder image"
         class="no-movie-poster-image">
@@ -122,16 +123,10 @@ li {
 </template>
 
 <script>
-import { searchResults } from "@/mocks/movies.js";
 
 export default {
   name: "MoviePanel",
-  props: ["selectedMovieData"],
-  data: function() {
-    return {
-      movies: searchResults.items
-    };
-  }
+  props: ["selectedMovieData"]
 };
 </script>
 

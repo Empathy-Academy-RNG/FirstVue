@@ -5,6 +5,11 @@ body {
   width: 100%;
   background-image: linear-gradient(to right, blue, purple);
   color: white;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 #list-of-movies {
   width: 49.5%;
@@ -12,9 +17,11 @@ body {
   text-align: center;
   border-right: 2px solid white;
 }
+
 ul {
   width: 100%;
 }
+
 li.movie-list-element {
   list-style: none;
   width: 80%;
@@ -64,7 +71,7 @@ a.movie-list-link:hover {
     </div>
     <div id="movie-info-panel">
       <MoviePanel
-        v-bind:selected-movie-data="this.selectedMovieData"
+        v-bind:selected-movie-data="selectedMovieData"
       ></MoviePanel>
     </div>
   </div>
@@ -78,19 +85,15 @@ export default {
   name: "Home",
   methods: {
     selectMovie: function(indexChosen) {
-      console.log(indexChosen);
-      this.selectedMovieData.movieIndexSelected = indexChosen;
+      this.selectedMovieData = this.movies[indexChosen];
     }
   },
   data: function() {
     return {
       movies: searchResults.items,
-      selectedMovieData: {
-        movieIndexSelected: -1
-      }
+      selectedMovieData: null
     };
   },
-
   components: {
     MoviePanel: MoviePanel
   }
