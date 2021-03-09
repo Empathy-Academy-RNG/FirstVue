@@ -1,3 +1,47 @@
+<template>
+  <div>
+    <div id="list-of-movies">
+      <ul>
+        <li
+          class="movie-list-element"
+          v-for="(movie, index) in movies"
+          :key="movie.id"
+        >
+          <a class="movie-list-link" @click.prevent="selectMovie(index)" href=""
+            >{{ movie.title }} ({{ movie.startYear }})</a
+          >
+        </li>
+      </ul>
+    </div>
+    <div id="movie-info-panel">
+      <MoviePanel v-bind:selected-movie-data="selectedMovieData"></MoviePanel>
+    </div>
+  </div>
+</template>
+
+<script>
+import { searchResults } from "@/mocks/movies";
+import MoviePanel from "@/components/MoviePanel";
+
+export default {
+  name: "Home",
+  methods: {
+    selectMovie: function(indexChosen) {
+      this.selectedMovieData = this.movies[indexChosen];
+    }
+  },
+  data: function() {
+    return {
+      movies: searchResults.items,
+      selectedMovieData: null
+    };
+  },
+  components: {
+    MoviePanel: MoviePanel
+  }
+};
+</script>
+
 <style>
 html,
 body {
@@ -54,48 +98,3 @@ a.movie-list-link:hover {
   }
 }
 </style>
-<template>
-  <div>
-    <div id="list-of-movies">
-      <ul>
-        <li
-          class="movie-list-element"
-          v-for="(movie, index) in movies"
-          v-bind:key="movie.id"
-        >
-          <a class="movie-list-link" @click.prevent="selectMovie(index)" href=""
-            >{{ movie.title }} ({{ movie.startYear }})</a
-          >
-        </li>
-      </ul>
-    </div>
-    <div id="movie-info-panel">
-      <MoviePanel
-        v-bind:selected-movie-data="selectedMovieData"
-      ></MoviePanel>
-    </div>
-  </div>
-</template>
-
-<script>
-import { searchResults } from "@/mocks/movies";
-import MoviePanel from "@/components/MoviePanel";
-
-export default {
-  name: "Home",
-  methods: {
-    selectMovie: function(indexChosen) {
-      this.selectedMovieData = this.movies[indexChosen];
-    }
-  },
-  data: function() {
-    return {
-      movies: searchResults.items,
-      selectedMovieData: null
-    };
-  },
-  components: {
-    MoviePanel: MoviePanel
-  }
-};
-</script>
