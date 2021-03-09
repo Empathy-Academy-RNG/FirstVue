@@ -32,7 +32,7 @@
   max-width: 50%;
 }
 
-.no-movie-selected-panel img{
+.no-movie-selected-panel img {
   margin-top: 100px;
   width: 80px;
   filter: invert(1);
@@ -56,17 +56,27 @@ li {
   cursor: pointer;
 }
 
-.movie-poster-image{
+.movie-poster-image {
   width: 100px;
 }
 
-.no-movie-poster-image{
+.no-movie-poster-image {
   margin-top: 40px;
   filter: invert(1);
   width: 100px;
   padding: 0;
 }
 
+#movie-fail-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 50%;
+  position: fixed;
+  top: 200px;
+  color: white;
+}
 
 /* TRANSITIONS */
 .fade-enter-active,
@@ -83,7 +93,7 @@ li {
     <transition name="fade">
       <div
         class="movie-panel-content"
-        v-if="selectedMovieData"
+        v-if="selectedMovieData && selectedMovieData !== -1"
         :key="selectedMovieData.id"
       >
         <h1>{{ selectedMovieData.title }} <br /></h1>
@@ -96,8 +106,8 @@ li {
           <span v-else> ongoing </span>
         </h2>
         <h2>
-          {{ selectedMovieData.averageRating }}/10
-          out of {{ selectedMovieData.votes }} votes
+          {{ selectedMovieData.averageRating }}/10 out of
+          {{ selectedMovieData.votes }} votes
         </h2>
         <h3>Genres:</h3>
         <li
@@ -107,23 +117,33 @@ li {
         >
           {{ genre }}
         </li>
-        <br>
-        <img v-if="selectedMovieData.posterUrl" src="gottaDoThis.png"
-             alt="Poster of the movie" class="movie-poster-image">
-        <img v-else src="../assets/no-poster-image.png" alt="No poster found placeholder image"
-        class="no-movie-poster-image">
+        <br />
+        <img
+          v-if="selectedMovieData.posterUrl"
+          src="gottaDoThis.png"
+          alt="Poster of the movie"
+          class="movie-poster-image"
+        />
+        <img
+          v-else
+          src="../assets/no-poster-image.png"
+          alt="No poster found placeholder image"
+          class="no-movie-poster-image"
+        />
+      </div>
+      <div id="movie-fail-panel" v-else-if="selectedMovieData === -1">
+        <h2>There was an error trying to access the data, please try again.</h2>
       </div>
       <div v-else class="no-movie-selected-panel">
         <h1>Select a movie to see the details</h1>
-        <br>
-        <img src="../assets/film.png" alt="Film placeholder image">
+        <br />
+        <img src="../assets/film.png" alt="Film placeholder image" />
       </div>
     </transition>
   </div>
 </template>
 
 <script>
-
 export default {
   name: "MoviePanel",
   props: ["selectedMovieData"]
