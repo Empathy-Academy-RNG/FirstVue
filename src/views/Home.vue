@@ -1,3 +1,81 @@
+<template>
+  <div>
+    <div v-if="movies" id="list-of-movies">
+      <ul>
+        <li
+          class="movie-list-element"
+          v-for="(movie, index) in movies"
+          :key="movie.id"
+        >
+          <a class="movie-list-link" @click.prevent="selectMovie(index)" href=""
+            >{{ movie.title }} ({{ movie.startYear }})</a
+          >
+        </li>
+      </ul>
+    </div>
+    <div v-else id="search-fail-panel">
+      <h1>The search request failed, please try again.</h1>
+      <button id="try-again-btn" @click.prevent="searchRequest()">
+        Search again
+      </button>
+    </div>
+    <div id="movie-info-panel">
+      <MoviePanel :selected-movie-data="selectedMovieData"></MoviePanel>
+    </div>
+  </div>
+</template>
+
+<script>
+import MoviePanel from "@/components/MoviePanel";
+
+export default {
+  name: "Home",
+  async created() {
+    await this.searchRequest();
+  },
+  methods: {
+    async searchRequest() {
+      try {
+        const response = await fetch("http://localhost:3000/search");
+        const searchDataRetrieved = await response.json();
+        this.movies = searchDataRetrieved.items;
+        this.selectedMovieData = null;
+      } catch (err) {
+        console.log(
+          "An error occurred while accessing the search data: " + err.toString()
+        );
+        this.selectedMovieData = -1;
+        this.movies = null;
+      }
+    },
+    selectMovie: async function(indexChosen) {
+      this.selectedID = this.movies[indexChosen].id;
+      try {
+        const allMovieDataResponse = await fetch(
+          "http://localhost:3000/movies/" + this.selectedID
+        );
+        this.selectedMovieData = await allMovieDataResponse.json();
+      } catch (err) {
+        console.log(
+          "An error occurred while trying to access the movie data: " +
+            err.toString()
+        );
+        this.selectedMovieData = -1;
+      }
+    }
+  },
+  data: function() {
+    return {
+      movies: null,
+      selectedID: null,
+      selectedMovieData: null
+    };
+  },
+  components: {
+    MoviePanel: MoviePanel
+  }
+};
+</script>
 <style>
 html,
 body {
@@ -78,81 +156,3 @@ a.movie-list-link:hover {
   }
 }
 </style>
-<template>
-  <div>
-    <div v-if="movies" id="list-of-movies">
-      <ul>
-        <li
-          class="movie-list-element"
-          v-for="(movie, index) in movies"
-          v-bind:key="movie.id"
-        >
-          <a class="movie-list-link" @click.prevent="selectMovie(index)" href=""
-            >{{ movie.title }} ({{ movie.startYear }})</a
-          >
-        </li>
-      </ul>
-    </div>
-    <div v-else id="search-fail-panel">
-      <h1>The search request failed, please try again.</h1>
-      <button id="try-again-btn" @click.prevent="searchRequest()">
-        Search again
-      </button>
-    </div>
-    <div id="movie-info-panel">
-      <MoviePanel v-bind:selected-movie-data="selectedMovieData"></MoviePanel>
-    </div>
-  </div>
-</template>
-
-<script>
-import MoviePanel from "@/components/MoviePanel";
-
-export default {
-  name: "Home",
-  async created() {
-    await this.searchRequest();
-  },
-  methods: {
-    async searchRequest() {
-      try {
-        const response = await fetch("http://localhost:3000/search");
-        const searchDataRetrieved = await response.json();
-        this.movies = searchDataRetrieved.items;
-        this.selectedMovieData = null;
-      } catch (err) {
-        console.log(
-          "An error occurred while accessing the search data: " + err.toString()
-        );
-        this.selectedMovieData = -1;
-        this.movies = null;
-      }
-    },
-    selectMovie: async function(indexChosen) {
-      this.selectedID = this.movies[indexChosen].id;
-      try {
-        const allMovieDataResponse = await fetch(
-          "http://localhost:3000/movies/" + this.selectedID
-        );
-        this.selectedMovieData = await allMovieDataResponse.json();
-      } catch (err) {
-        console.log(
-          "An error occurred while trying to access the movie data: " +
-            err.toString()
-        );
-        this.selectedMovieData = -1;
-      }
-    }
-  },
-  data: function() {
-    return {
-      movies: null,
-      selectedID: null,
-      selectedMovieData: null
-    };
-  },
-  components: {
-    MoviePanel: MoviePanel
-  }
-};
-</script>
