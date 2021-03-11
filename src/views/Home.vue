@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div id="list-of-movies">
+    <div v-if="movies" id="list-of-movies">
       <ul>
         <li
           class="movie-list-element"
@@ -13,26 +13,71 @@
         </li>
       </ul>
     </div>
+    <div v-else id="search-fail-panel">
+      <h1>The search request failed, please try again.</h1>
+      <button id="try-again-btn" @click.prevent="searchRequest()">
+        Search again
+      </button>
+    </div>
     <div id="movie-info-panel">
-      <MoviePanel v-bind:selected-movie-data="selectedMovieData"></MoviePanel>
+      <MoviePanel :selected-movie-data="selectedMovieData"></MoviePanel>
     </div>
   </div>
 </template>
 
 <script>
-import { searchResults } from "@/mocks/movies";
 import MoviePanel from "@/components/MoviePanel";
 
 export default {
   name: "Home",
+  async created() {
+    await this.searchRequest();
+  },
   methods: {
-    selectMovie: function(indexChosen) {
-      this.selectedMovieData = this.movies[indexChosen];
+    async searchRequest() {
+      try {
+        const response = await fetch("http://localhost:3000/search");
+        const searchDataRetrieved = await response.json();
+        this.movies = searchDataRetrieved.items;
+        this.selectedMovieData = null;
+      } catch (err) {
+        console.log(
+          "An error occurred while accessing the search data: " + err.toString()
+        );
+        this.selectedMovieData = -1;
+        this.movies = null;
+      }
+    },
+    selectMovie: async function(indexChosen) {
+      this.selectedID = this.movies[indexChosen].id;
+      try {
+        const allMovieDataResponse = await fetch(
+          "http://localhost:3000/movies/" + this.selectedID
+        );
+        const posterDataResponse = await fetch(
+          "http://omdbapi.com/?apikey=490b2246&i=" + this.selectedID
+        );
+        const omdbDataRetrieved = await posterDataResponse.json();
+        this.selectedMovieData = await allMovieDataResponse.json();
+        this.$set(
+          this.selectedMovieData,
+          "posterUrl",
+          omdbDataRetrieved.Poster
+        );
+      } catch (err) {
+        console.log(
+          "An error occurred while trying to access the movie data: " +
+            err.toString()
+        );
+        this.selectedMovieData = -1;
+      }
+      await this.retrievePoster(this.selectedID);
     }
   },
   data: function() {
     return {
-      movies: searchResults.items,
+      movies: null,
+      selectedID: null,
       selectedMovieData: null
     };
   },
@@ -41,7 +86,6 @@ export default {
   }
 };
 </script>
-
 <style>
 html,
 body {
@@ -60,6 +104,30 @@ body {
   float: left;
   text-align: center;
   border-right: 2px solid white;
+}
+
+#search-fail-panel {
+  width: 49.5%;
+  float: left;
+  text-align: center;
+  color: white;
+  position: fixed;
+  top: 190px;
+}
+
+#try-again-btn {
+  border: 1px solid white;
+  padding: 10px 20px;
+  color: white;
+  background-color: transparent;
+  font-family: Avenir, sans-serif;
+  font-size: 1em;
+}
+
+#try-again-btn:hover {
+  color: black;
+  background-color: white;
+  cursor: pointer;
 }
 
 ul {
