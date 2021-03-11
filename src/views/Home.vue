@@ -54,7 +54,16 @@ export default {
         const allMovieDataResponse = await fetch(
           "http://localhost:3000/movies/" + this.selectedID
         );
+        const posterDataResponse = await fetch(
+          "http://omdbapi.com/?apikey=490b2246&i=" + this.selectedID
+        );
+        const omdbDataRetrieved = await posterDataResponse.json();
         this.selectedMovieData = await allMovieDataResponse.json();
+        this.$set(
+          this.selectedMovieData,
+          "posterUrl",
+          omdbDataRetrieved.Poster
+        );
       } catch (err) {
         console.log(
           "An error occurred while trying to access the movie data: " +
@@ -62,6 +71,7 @@ export default {
         );
         this.selectedMovieData = -1;
       }
+      await this.retrievePoster(this.selectedID);
     }
   },
   data: function() {
@@ -110,7 +120,7 @@ body {
   padding: 10px 20px;
   color: white;
   background-color: transparent;
-  font-family: Avenir;
+  font-family: Avenir, sans-serif;
   font-size: 1em;
 }
 

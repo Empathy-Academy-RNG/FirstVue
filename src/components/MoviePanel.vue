@@ -19,6 +19,9 @@
           {{ selectedMovieData.averageRating }}/10 out of
           {{ selectedMovieData.votes }} votes
         </h2>
+        <h2 v-if="selectedMovieData.posterUrl">
+          {{ selectedMovieData.votes }}
+        </h2>
         <h3>Genres:</h3>
         <ul>
           <li
@@ -32,7 +35,7 @@
         <br />
         <img
           v-if="selectedMovieData.posterUrl"
-          src="gottaDoThis.png"
+          v-bind:src="selectedMovieData.posterUrl"
           alt="Poster of the movie"
           class="movie-poster-image"
         />
@@ -125,7 +128,7 @@ li {
 }
 
 .movie-poster-image {
-  width: 100px;
+  width: 300px;
 }
 
 .no-movie-poster-image {
