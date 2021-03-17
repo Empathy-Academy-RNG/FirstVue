@@ -1,13 +1,18 @@
 <template>
   <div>
-    <div v-if="movies" id="list-of-movies">
+    <div v-if="movies" id="list-of-movies" data-test="list-of-movies">
       <ul>
         <li
           class="movie-list-element"
           v-for="(movie, index) in movies"
           :key="movie.id"
+          data-test="movie-list-item"
         >
-          <a class="movie-list-link" @click.prevent="selectMovie(index)" href=""
+          <a
+            class="movie-list-link"
+            @click.prevent="selectMovie(index)"
+            href=""
+            data-test="movie-list-link"
             >{{ movie.title }} ({{ movie.startYear }})</a
           >
         </li>
@@ -15,7 +20,11 @@
     </div>
     <div v-else id="search-fail-panel">
       <h1>The search request failed, please try again.</h1>
-      <button id="try-again-btn" @click.prevent="searchRequest()">
+      <button
+        data-test="retry-btn"
+        id="try-again-btn"
+        @click.prevent="searchRequest()"
+      >
         Search again
       </button>
     </div>
@@ -35,6 +44,10 @@ export default {
   },
   methods: {
     async searchRequest() {
+      if (this.movies != null) {
+        console.log("Search data already retrieved");
+        return;
+      }
       try {
         const response = await fetch("http://localhost:3000/search");
         const searchDataRetrieved = await response.json();
@@ -71,7 +84,6 @@ export default {
         );
         this.selectedMovieData = -1;
       }
-      await this.retrievePoster(this.selectedID);
     }
   },
   data: function() {

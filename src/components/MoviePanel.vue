@@ -1,21 +1,22 @@
 <template>
-  <div class="movie-panel-main">
+  <div class="movie-panel-main" data-test="movie-panel-main">
     <transition name="fade">
       <div
         class="movie-panel-content"
         v-if="selectedMovieData && selectedMovieData !== -1"
         :key="selectedMovieData.id"
+        data-test="movie-panel"
       >
-        <h1>{{ selectedMovieData.title }} <br /></h1>
-        <h2>{{ selectedMovieData.type }}</h2>
-        <h2>
+        <h1 data-test="movie-title">{{ selectedMovieData.title }} <br /></h1>
+        <h2 data-test="movie-type">{{ selectedMovieData.type }}</h2>
+        <h2 data-test="movie-years">
           {{ selectedMovieData.startYear }} -
           <span v-if="selectedMovieData.endYear">{{
             selectedMovieData.endYear
           }}</span>
           <span v-else> ongoing </span>
         </h2>
-        <h2>
+        <h2 data-test="movie-rating">
           {{ selectedMovieData.averageRating }}/10 out of
           {{ selectedMovieData.votes }} votes
         </h2>
@@ -28,6 +29,7 @@
             class="genre-list-element"
             v-for="(genre, index) in selectedMovieData.genres"
             v-bind:key="index"
+            data-test="movie-genres"
           >
             {{ genre }}
           </li>
