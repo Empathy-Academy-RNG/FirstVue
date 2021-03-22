@@ -1,7 +1,7 @@
 <template>
   <div>
     <input
-      onchange="this.onSearchChange()"
+      v-on:input="onSearchChange"
       type="text"
       placeholder="Search for a movie"
     />
@@ -12,9 +12,9 @@
 export default {
   name: "SearchBox",
   methods: {
-    onSearchChange(event) {
-      this.$emit("clicked", event.target.text());
-      console.log(event.target.text());
+    onSearchChange: function(event) {
+      //TODO calcular tiempo para esperar
+      this.$emit("search-change", event.target.value);
     }
   }
 };

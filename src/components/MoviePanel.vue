@@ -8,9 +8,8 @@
         data-test="movie-panel"
       >
         <h1 data-test="movie-title">{{ selectedMovieData.title }} <br /></h1>
-        <h2 data-test="movie-type">{{ selectedMovieData.type }}</h2>
         <h2 data-test="movie-years">
-          {{ selectedMovieData.startYear }} -
+          {{ selectedMovieData.type }}:  {{ selectedMovieData.startYear }} -
           <span v-if="selectedMovieData.endYear">{{
             selectedMovieData.endYear
           }}</span>
@@ -19,9 +18,6 @@
         <h2 data-test="movie-rating">
           {{ selectedMovieData.averageRating }}/10 out of
           {{ selectedMovieData.votes }} votes
-        </h2>
-        <h2 v-if="selectedMovieData.posterUrl">
-          {{ selectedMovieData.votes }}
         </h2>
         <h3>Genres:</h3>
         <ul>
@@ -76,6 +72,8 @@ export default {
 }
 
 .movie-panel-content {
+  height: 200px;
+  vertical-align: top;
   width: 50%;
   filter: none;
   position: fixed;
@@ -130,7 +128,7 @@ li {
 }
 
 .movie-poster-image {
-  width: 300px;
+  width: 20em;
 }
 
 .no-movie-poster-image {

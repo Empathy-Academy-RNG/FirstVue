@@ -1,6 +1,6 @@
 <template>
   <div>
-    <SearchBox></SearchBox>
+    <SearchBox  v-on:search-change="doSearch"></SearchBox>
     <div v-if="movies" id="list-of-movies" data-test="list-of-movies">
       <ul>
         <li
@@ -86,6 +86,10 @@ export default {
         );
         this.selectedMovieData = -1;
       }
+    },
+    doSearch: function(textToSearch){
+      console.log("A buscar: " + textToSearch);
+      this.movies = this.movies.filter(movie => movie.title.includes(textToSearch));
     }
   },
   data: function() {
