@@ -1,5 +1,6 @@
 <template>
   <div>
+    <SearchBox></SearchBox>
     <div v-if="movies" id="list-of-movies" data-test="list-of-movies">
       <ul>
         <li
@@ -36,6 +37,7 @@
 
 <script>
 import MoviePanel from "@/components/MoviePanel";
+import SearchBox from "@/components/SearchBox";
 
 export default {
   name: "Home",
@@ -94,7 +96,8 @@ export default {
     };
   },
   components: {
-    MoviePanel: MoviePanel
+    MoviePanel: MoviePanel,
+    SearchBox: SearchBox
   }
 };
 </script>
