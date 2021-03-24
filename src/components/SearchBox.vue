@@ -1,7 +1,7 @@
 <template>
   <div>
     <input
-      v-on:input="onSearchChange"
+      @keyup="onSearchChange"
       type="text"
       placeholder="Search for a movie"
     />
@@ -12,9 +12,14 @@
 export default {
   name: "SearchBox",
   methods: {
+    sendRequestPetition: function(textOfRequest) {
+      this.$emit("search-change", textOfRequest);
+    },
     onSearchChange: function(event) {
-      //TODO calcular tiempo para esperar
-      this.$emit("search-change", event.target.value);
+      const ref = this;
+      setTimeout(function() {
+        ref.sendRequestPetition(event.target.value);
+      }, 700);
     }
   }
 };
@@ -27,8 +32,8 @@ input {
   width: 20em;
   border: 1px solid black;
   margin: 0 auto 100px;
-  font-size: 1em;
-  transition: width 0.3s ease-in-out;
+  font-size: 1.5em;
+  transition: width 0.2s ease-in-out;
 }
 input:focus {
   border: 1px solid white;
