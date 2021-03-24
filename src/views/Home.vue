@@ -40,7 +40,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import MoviePanel from "@/components/MoviePanel";
 import SearchBox from "@/components/SearchBox";
 
@@ -79,7 +79,7 @@ export default {
         this.initialSearchStatus = false;
         this.specificMovieDataStatus = false;
         this.selectedMovieData = -1;
-        this.movies = null;
+        this.movies: MovieInterface = null;
       }
     },
     selectMovie: async function(indexChosen) {
