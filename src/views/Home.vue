@@ -51,6 +51,8 @@ export default {
   },
   methods: {
     searchRequest: async function(textToSearch) {
+      let controller = new AbortController();
+      setTimeout(() => controller.abort(), 6000);
       if (textToSearch !== "") {
         this.currentTextSearch = textToSearch;
       } else {
@@ -60,13 +62,17 @@ export default {
       try {
         this.currentTextSearch = this.currentTextSearch.toLowerCase();
         const response = await fetch(
-          "http://localhost:3000/search/" + this.currentTextSearch
+          "http://localhost:3000/search/" + this.currentTextSearch,
+          { signal: controller.signal }
         );
         const searchDataRetrieved = await response.json();
         this.movies = searchDataRetrieved.items;
         this.selectedMovieData = null;
         this.initialSearchStatus = true;
       } catch (err) {
+        if (err.name === "AbortError") {
+          console.log("Request aborted due to timeout");
+        }
         console.log(
           "An error occurred while accessing the search data: " + err.toString()
         );
@@ -77,10 +83,13 @@ export default {
       }
     },
     selectMovie: async function(indexChosen) {
+      let controller = new AbortController();
+      setTimeout(() => controller.abort(), 3000);
       this.selectedID = this.movies[indexChosen].id;
       try {
         const allMovieDataResponse = await fetch(
-          "http://localhost:3000/movies/" + this.selectedID
+          "http://localhost:3000/movies/" + this.selectedID,
+          { signal: controller.signal }
         );
         const posterDataResponse = await fetch(
           "http://omdbapi.com/?apikey=490b2246&i=" + this.selectedID
@@ -94,6 +103,9 @@ export default {
         );
         this.specificMovieDataStatus = true;
       } catch (err) {
+        if (err.name === "Abort error") {
+          console.log("Request aborted due to timeout");
+        }
         console.log(
           "An error occurred while trying to access the movie data: " +
             err.toString()

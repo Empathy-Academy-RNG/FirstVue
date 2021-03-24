@@ -2,7 +2,7 @@
   <div>
     <input
       @keyup="onSearchChange"
-      type="text"
+      type="search"
       placeholder="Search for a movie"
     />
   </div>
