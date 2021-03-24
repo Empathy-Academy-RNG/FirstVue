@@ -12,6 +12,7 @@
     "test:unit-watch": "vue-cli-service test:unit --watch"
   },
   "dependencies": {
+    "@typescript-eslint/parser": "^4.19.0",
     "core-js": "^3.6.5",
     "node-fetch": "^2.6.1",
     "vue": "^2.6.11",

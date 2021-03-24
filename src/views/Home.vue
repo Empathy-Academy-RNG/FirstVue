@@ -43,6 +43,67 @@
 <script lang="ts">
 import MoviePanel from "@/components/MoviePanel";
 import SearchBox from "@/components/SearchBox";
+//import { MoviesInterface } from "../models/interfaces";
+/*
+interface Item {
+  id: string;
+  title: string;
+  genres: string[];
+  type: string;
+  averageRating: string;
+  votes: string;
+  startYear: number;
+  endYear?: number;
+}
+
+interface Genres {
+  comedy: number;
+  drama: number;
+  action: number;
+  adventure: number;
+  sciFi: number;
+}
+
+interface Aggregations {
+  genres: Genres;
+}
+
+interface Types {
+  movie: number;
+  short: number;
+  tvSeries: number;
+}
+
+interface Languages {
+  english: number;
+  spanish: number;
+}
+
+interface Search {
+  id: string;
+  items: Item[];
+  aggregations: Aggregations;
+  types: Types;
+  languages: Languages;
+}
+
+interface Movie {
+  id: string;
+  title: string;
+  genres: string[];
+  type: string;
+  averageRating: string;
+  votes: string;
+  startYear: number;
+  endYear?: number;
+}
+
+
+interface MoviesInterface {
+  search: Search[];
+  movies: Movie[];
+}
+*/
 
 export default {
   name: "Home",
@@ -57,7 +118,6 @@ export default {
         this.currentTextSearch = textToSearch;
       } else {
         this.currentTextSearch = this.allTextSearch;
-        console.log("voided");
       }
       try {
         this.currentTextSearch = this.currentTextSearch.toLowerCase();
@@ -79,7 +139,7 @@ export default {
         this.initialSearchStatus = false;
         this.specificMovieDataStatus = false;
         this.selectedMovieData = -1;
-        this.movies: MovieInterface = null;
+        this.movies = null;
       }
     },
     selectMovie: async function(indexChosen) {
