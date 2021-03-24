@@ -1,8 +1,12 @@
 <template>
   <div>
-    <SearchBox  v-on:search-change="doSearch"></SearchBox>
-    <div v-if="movies" id="list-of-movies" data-test="list-of-movies">
-      <ul>
+    <SearchBox v-on:search-change="searchRequest"></SearchBox>
+    <div
+      v-if="movies || this.currentTextSearch !== ''"
+      id="list-of-movies"
+      data-test="list-of-movies"
+    >
+      <ul id="main-list-movies">
         <li
           class="movie-list-element"
           v-for="(movie, index) in movies"
@@ -19,12 +23,13 @@
         </li>
       </ul>
     </div>
-    <div v-else id="search-fail-panel">
-      <h1>The search request failed, please try again.</h1>
+    <div v-if="!this.initialSearchStatus" id="search-fail-panel">
+      <img src="../assets/warning.png" alt="" id="search-fail-image" />
+      <h1>Something went wrong, please try again.</h1>
       <button
         data-test="retry-btn"
         id="try-again-btn"
-        @click.prevent="searchRequest()"
+        @click.prevent="searchRequest(allTextSearch)"
       >
         Search again
       </button>
@@ -42,23 +47,31 @@ import SearchBox from "@/components/SearchBox";
 export default {
   name: "Home",
   async created() {
-    await this.searchRequest();
+    await this.searchRequest(this.allTextSearch);
   },
   methods: {
-    async searchRequest() {
-      if (this.movies != null) {
-        console.log("Search data already retrieved");
-        return;
+    searchRequest: async function(textToSearch) {
+      if (textToSearch !== "") {
+        this.currentTextSearch = textToSearch;
+      } else {
+        this.currentTextSearch = this.allTextSearch;
+        console.log("voided");
       }
       try {
-        const response = await fetch("http://localhost:3000/search");
+        this.currentTextSearch = this.currentTextSearch.toLowerCase();
+        const response = await fetch(
+          "http://localhost:3000/search/" + this.currentTextSearch
+        );
         const searchDataRetrieved = await response.json();
         this.movies = searchDataRetrieved.items;
         this.selectedMovieData = null;
+        this.initialSearchStatus = true;
       } catch (err) {
         console.log(
           "An error occurred while accessing the search data: " + err.toString()
         );
+        this.initialSearchStatus = false;
+        this.specificMovieDataStatus = false;
         this.selectedMovieData = -1;
         this.movies = null;
       }
@@ -79,24 +92,26 @@ export default {
           "posterUrl",
           omdbDataRetrieved.Poster
         );
+        this.specificMovieDataStatus = true;
       } catch (err) {
         console.log(
           "An error occurred while trying to access the movie data: " +
             err.toString()
         );
         this.selectedMovieData = -1;
+        this.specificMovieDataStatus = false;
       }
-    },
-    doSearch: function(textToSearch){
-      console.log("A buscar: " + textToSearch);
-      this.movies = this.movies.filter(movie => movie.title.includes(textToSearch));
     }
   },
   data: function() {
     return {
+      allTextSearch: "avengers",
+      currentTextSearch: "avengers",
       movies: null,
       selectedID: null,
-      selectedMovieData: null
+      selectedMovieData: null,
+      initialSearchStatus: true,
+      specificMovieDataStatus: false
     };
   },
   components: {
@@ -122,16 +137,29 @@ body {
   width: 49.5%;
   float: left;
   text-align: center;
+}
+
+#main-list-movies {
   border-right: 2px solid white;
 }
 
+#main-list-movies:empty {
+  border-right: 2px solid transparent;
+}
+
 #search-fail-panel {
-  width: 49.5%;
+  margin-top: 40px;
+  width: 100%;
   float: left;
   text-align: center;
   color: white;
   position: fixed;
   top: 190px;
+}
+
+#search-fail-image {
+  width: 8em;
+  filter: invert(100%);
 }
 
 #try-again-btn {

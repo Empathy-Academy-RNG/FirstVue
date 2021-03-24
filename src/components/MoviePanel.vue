@@ -7,9 +7,14 @@
         :key="selectedMovieData.id"
         data-test="movie-panel"
       >
+        <!--:style="{
+          'background-image': 'url(\'' + selectedMovieData.posterUrl + '\')'
+        }"
+        -->
+
         <h1 data-test="movie-title">{{ selectedMovieData.title }} <br /></h1>
         <h2 data-test="movie-years">
-          {{ selectedMovieData.type }}:  {{ selectedMovieData.startYear }} -
+          {{ selectedMovieData.type }}: {{ selectedMovieData.startYear }} -
           <span v-if="selectedMovieData.endYear">{{
             selectedMovieData.endYear
           }}</span>
@@ -44,10 +49,7 @@
           class="no-movie-poster-image"
         />
       </div>
-      <div id="movie-fail-panel" v-else-if="selectedMovieData === -1">
-        <h2>There was an error trying to access the data, please try again.</h2>
-      </div>
-      <div v-else class="no-movie-selected-panel">
+      <div v-else-if="selectedMovieData !== -1" class="no-movie-selected-panel">
         <h1>Select a movie to see the details</h1>
         <br />
         <img src="../assets/film.png" alt="Film placeholder image" />
@@ -72,7 +74,6 @@ export default {
 }
 
 .movie-panel-content {
-  height: 200px;
   vertical-align: top;
   width: 50%;
   filter: none;
@@ -106,7 +107,7 @@ export default {
 }
 
 ul {
-  padding: 0px;
+  padding: 0;
 }
 
 li {
@@ -128,7 +129,7 @@ li {
 }
 
 .movie-poster-image {
-  width: 20em;
+  width: 16em;
 }
 
 .no-movie-poster-image {
@@ -147,6 +148,25 @@ li {
   position: fixed;
   top: 200px;
   color: white;
+}
+
+@media (max-height: 1000px) {
+  .movie-poster-image {
+    width: 10em;
+  }
+  .movie-panel-content h1 {
+    font-size: 1.2em;
+  }
+  .movie-panel-content h2 {
+    font-size: 1em;
+  }
+  .movie-panel-content h3 {
+    font-size: 0.8em;
+  }
+  li {
+    padding: -5px;
+    font-size: 10px;
+  }
 }
 
 /* TRANSITIONS */
