@@ -51,7 +51,7 @@ export interface Movie {
   endYear?: number;
 }
 
-export interface MoviesInterface {
+export default interface MoviesInterface {
   search: Search[];
   movies: Movie[];
 }

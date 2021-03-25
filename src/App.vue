@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <div id="nav"><router-link to="/">Vue Films</router-link></div>
+    <div id="nav">
+      <router-link to="/">Vue Films - Front-end path</router-link>
+    </div>
     <router-view />
   </div>
 </template>
