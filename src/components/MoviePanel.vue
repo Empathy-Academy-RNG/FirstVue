@@ -49,11 +49,6 @@
           class="no-movie-poster-image"
         />
       </div>
-      <div v-else-if="selectedMovieData !== -1" class="no-movie-selected-panel">
-        <h1>Select a movie to see the details</h1>
-        <br />
-        <img src="../assets/film.png" alt="Film placeholder image" />
-      </div>
     </transition>
   </div>
 </template>
@@ -67,47 +62,24 @@ export default {
 
 <style scoped>
 .movie-panel-main {
-  height: 100vh;
-  width: 50%;
+  margin-top: 100px;
+  width: 100%;
   float: right;
   text-align: center;
 }
 
 .movie-panel-content {
   vertical-align: top;
-  width: 50%;
+  width: 100%;
   filter: none;
   position: fixed;
   color: white;
-}
-
-.no-movie-selected-panel {
-  height: 50vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  position: fixed;
-  width: 50%;
-}
-
-.no-movie-selected-panel h1 {
-  display: table-cell;
-  vertical-align: middle;
-  margin: 0 auto;
-  color: white;
   text-align: center;
-  max-width: 50%;
 }
 
-.no-movie-selected-panel img {
-  margin-top: 100px;
-  width: 80px;
-  filter: invert(1);
-}
-
-ul {
-  padding: 0;
+.movie-panel-content h1 {
+  font-size: 2.5em;
+  text-transform: uppercase;
 }
 
 li {
@@ -118,7 +90,7 @@ li {
 .genre-list-element {
   border: 1px solid white;
   display: inline;
-  padding: 0.5em;
+  padding: 1.2em;
   margin: 10px;
 }
 
@@ -129,7 +101,7 @@ li {
 }
 
 .movie-poster-image {
-  width: 16em;
+  width: 22em;
 }
 
 .no-movie-poster-image {

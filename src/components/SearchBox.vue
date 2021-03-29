@@ -31,7 +31,7 @@ input {
   padding: 20px;
   width: 20em;
   border: 1px solid black;
-  margin: 0 auto 100px;
+  margin: 100px auto;
   font-size: 1.5em;
   transition: width 0.2s ease-in-out;
 }
