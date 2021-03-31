@@ -16,20 +16,18 @@ import MovieList from "../components/MovieList.vue";
 export default {
   name: "Home",
   async created() {
-    await this.searchRequest(this.allTextSearch);
+    await this.searchRequest("");
   },
   methods: {
     searchRequest: async function(textToSearch) {
-      if (!textToSearch) {
-        textToSearch = this.allTextSearch;
-      }
       let controller = new AbortController();
       setTimeout(() => controller.abort(), 6000);
-      this.currentTextSearch = textToSearch;
+      if (textToSearch) {
+        this.currentTextSearch = textToSearch;
+      }
       try {
-        this.currentTextSearch = this.currentTextSearch.toLowerCase();
         const response = await fetch(
-          "http://localhost:3000/search/" + this.currentTextSearch,
+          "http://localhost:8080/search?query=" + this.currentTextSearch,
           { signal: controller.signal }
         );
         const searchDataRetrieved = await response.json();
@@ -50,8 +48,7 @@ export default {
   },
   data: function() {
     return {
-      allTextSearch: "avengers",
-      currentTextSearch: "avengers",
+      currentTextSearch: "",
       selectedID: null,
       selectedMovieData: null,
       initialSearchStatus: true

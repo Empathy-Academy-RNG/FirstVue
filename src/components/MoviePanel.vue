@@ -3,7 +3,7 @@
     <transition name="fade">
       <div
         class="movie-panel-content"
-        v-if="selectedMovieData && selectedMovieData !== -1"
+        v-if="selectedMovieData"
         :key="selectedMovieData.id"
         data-test="movie-panel"
       >
@@ -14,9 +14,9 @@
 
         <h1 data-test="movie-title">{{ selectedMovieData.title }} <br /></h1>
         <h2 data-test="movie-years">
-          {{ selectedMovieData.type }}: {{ selectedMovieData.startYear }} -
-          <span v-if="selectedMovieData.endYear">{{
-            selectedMovieData.endYear
+          {{ selectedMovieData.type }}: {{ selectedMovieData.start_year }} -
+          <span v-if="selectedMovieData.end_year">{{
+            selectedMovieData.end_year
           }}</span>
           <span v-else> ongoing </span>
         </h2>
@@ -56,7 +56,11 @@
 <script>
 export default {
   name: "MoviePanel",
-  props: ["selectedMovieData"]
+  props: {
+    selectedMovieData: {
+      required: true
+    }
+  }
 };
 </script>
 

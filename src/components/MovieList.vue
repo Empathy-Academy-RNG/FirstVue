@@ -8,16 +8,16 @@
       <ul id="main-list-movies">
         <li
           class="movie-list-element"
-          v-for="movie in $store.state.movies"
+          v-for="(movie, index) in $store.state.movies"
           :key="movie.id"
           data-test="movie-list-item"
         >
           <a
             class="movie-list-link"
-            @click.prevent="sendToMovie(movie.id)"
+            @click.prevent="sendToMovie(index)"
             href=""
             data-test="movie-list-link"
-            >{{ movie.title }} ({{ movie.startYear }})</a
+            >{{ movie.title }} ({{ movie.start_year }})</a
           >
         </li>
       </ul>
@@ -44,10 +44,10 @@ export default {
     this.$emit("search-again");
   },
   methods: {
-    sendToMovie(movieIdFromListItem) {
+    sendToMovie(selectedMovieIndex) {
       this.$router.push({
         name: "Movie",
-        params: { movieId: movieIdFromListItem }
+        params: { movieId: this.$store.state.movies[selectedMovieIndex].id }
       });
     },
     emitSearchRequest() {
@@ -56,8 +56,8 @@ export default {
   },
   data: function() {
     return {
-      allTextSearch: "avengers",
-      currentTextSearch: "avengers"
+      allTextSearch: "",
+      currentTextSearch: ""
     };
   }
 };

@@ -8,29 +8,30 @@ import MoviePanel from "@/components/MoviePanel";
 export default {
   name: "Movie",
   async created() {
-    await this.getMovieData(this.$route.params.movieId);
+    this.idSelected = this.$route.params.movieId;
+    let tempIdForFilter = this.idSelected;
+    if (this.$store.state.movies.length !== 0) {
+      this.selectedMovieData = this.$store.state.movies.filter(function(movie) {
+        return movie.id === tempIdForFilter;
+      })[0];
+    }
+    await this.getMoviePoster();
   },
   methods: {
-    getMovieData: async function(idForMovieSelected) {
+    getMoviePoster: async function() {
       let controller = new AbortController();
-      setTimeout(() => controller.abort(), 3000);
-      this.selectedID = idForMovieSelected;
+      setTimeout(() => controller.abort(), 4000);
       try {
-        const allMovieDataResponse = await fetch(
-          "http://localhost:3000/movies/" + this.selectedID,
-          { signal: controller.signal }
-        );
         const posterDataResponse = await fetch(
-          "http://omdbapi.com/?apikey=490b2246&i=" + this.selectedID
+          "http://omdbapi.com/?apikey=490b2246&i=" + this.idSelected
         );
         const omdbDataRetrieved = await posterDataResponse.json();
-        this.selectedMovieData = await allMovieDataResponse.json();
+        //this.selectedMovieData.posterUrl = omdbDataRetrieved.Poster;
         this.$set(
           this.selectedMovieData,
           "posterUrl",
           omdbDataRetrieved.Poster
         );
-        this.specificMovieDataStatus = true;
       } catch (err) {
         if (err.name === "Abort error") {
           console.log("Request aborted due to timeout");
@@ -39,8 +40,6 @@ export default {
           "An error occurred while trying to access the movie data: " +
             err.toString()
         );
-        this.selectedMovieData = -1;
-        this.specificMovieDataStatus = false;
       }
     }
   },

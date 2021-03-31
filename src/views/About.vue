@@ -1,37 +1,14 @@
 <template>
-  <div class="about">
-    <h1>Origin</h1>
-    <p>
-      This page is a project done by Raúl Núñez García while enrolled in the
-      Empathy Academy.
-    </p>
-    <p>
-      It is meant to showcase the concepts learned during the Front-end path of
-      the Academy, mainly related with Vue and other web technologies.
-    </p>
-    <img src="../assets/empathy-logo.gif" alt="Logo of Empathy.co" />
-  </div>
+  <AboutPanel></AboutPanel>
 </template>
-<style scoped>
-h1 {
-  margin-top: 140px;
-  margin-bottom: 50px;
-  color: white;
-}
+<script>
+import AboutPanel from "@/components/AboutPanel";
 
-p {
-  color: white;
-  width: 50%;
-  font-size: 1.5em;
-  margin: 0 auto;
-  letter-spacing: 1px;
-  line-height: 2em;
-}
-
-img {
-  margin-top: 100px;
-  background-color: white;
-  padding: 20px;
-  border-radius: 50%;
-}
-</style>
+export default {
+  name: "About",
+  components: {
+    AboutPanel: AboutPanel
+  }
+};
+</script>
+<style></style>
