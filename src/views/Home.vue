@@ -1,7 +1,7 @@
 <template>
   <div>
-    <SearchBox v-on:search-change="searchRequest"></SearchBox>
     <Facets></Facets>
+    <SearchBox v-on:search-change="searchRequest"></SearchBox>
     <MovieList
       v-bind:initial-search-status="initialSearchStatus"
       v-on:search-again="searchRequest"

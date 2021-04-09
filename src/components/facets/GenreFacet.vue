@@ -1,7 +1,11 @@
 <template>
   <div class="genre-facet-panel">
     <h3 class="facet-title">Genre</h3>
-    <div v-for="(genre, index) in $store.state.genres" :key="index">
+    <div
+      class="genre-facet-container"
+      v-for="(genre, index) in $store.state.genres"
+      :key="index"
+    >
       <input
         type="radio"
         id="'radio-genre-' + index"
@@ -10,8 +14,9 @@
         @click="genreFacetChanged"
       />
       <label :for="'radio-genre-' + index" class="radio-custom-label">{{
-        genre
+        genre[0]
       }}</label>
+      <span class="number-facets"> ({{ genre[1] }})</span>
     </div>
   </div>
 </template>
@@ -34,9 +39,10 @@ export default {
 <style scoped>
 .genre-facet-panel {
   width: 100%;
-  height: 250px;
-  overflow-y: scroll;
+  height: 300px;
   box-sizing: content-box;
+  overflow-y: scroll;
+  margin-top: 60px;
 }
 
 .facet-title {
@@ -54,6 +60,10 @@ export default {
 
 input {
   margin: 10px;
+}
+
+.genre-facet-container {
+  margin-top: 30px;
 }
 
 label {

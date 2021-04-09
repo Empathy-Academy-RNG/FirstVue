@@ -1,7 +1,11 @@
 <template>
   <div class="media-type-facet-panel">
     <h3 class="facet-title">Media type</h3>
-    <div v-for="(mediaType, index) in $store.state.mediaTypes" :key="index">
+    <div
+      class="media-type-facet-container"
+      v-for="(mediaType, index) in $store.state.mediaTypes"
+      :key="index"
+    >
       <input
         type="radio"
         id="'radio-type-' + index"
@@ -10,8 +14,9 @@
         @click="mediaTypeFacetChanged"
       />
       <label :for="'radio-type-' + index" class="radio-custom-label">{{
-        mediaType
+        mediaType[0]
       }}</label>
+      <span class="number-facets"> ({{ mediaType[1] }})</span>
     </div>
   </div>
 </template>
@@ -33,7 +38,7 @@ export default {
 
 <style scoped>
 .media-type-facet-panel {
-  margin: 40px 0;
+  margin-top: 60px;
   width: 100%;
   height: 250px;
   overflow-y: scroll;
@@ -51,6 +56,10 @@ export default {
   margin: 0 auto 10px;
   background-color: rgb(13, 0, 242);
   padding: 8px;
+}
+
+.media-type-facet-container {
+  margin-top: 30px;
 }
 
 input {

@@ -14,8 +14,9 @@
         @click="yearFacetChanged"
       />
       <label :for="'radio-years-' + index" class="radio-custom-label">{{
-        decade
+        decade[0]
       }}</label>
+      <span class="number-facets"> ({{ decade[1] }})</span>
     </div>
   </div>
 </template>
@@ -27,7 +28,6 @@ export default {
     yearFacetChanged: function(event) {
       const yearsTextFormatted = event.target.value.split("-").join("/");
       const yearFacet = "&year=" + yearsTextFormatted;
-      console.log(yearFacet);
       this.$store.dispatch("movieRequestWithFacets", {
         facetsToInclude: yearFacet
       });
@@ -38,7 +38,7 @@ export default {
 
 <style scoped>
 .year-facet-panel {
-  margin-top: 40px;
+  margin-top: 60px;
   width: 100%;
   height: 250px;
   overflow-y: scroll;

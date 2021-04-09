@@ -25,6 +25,7 @@
   width: 100%;
   background-image: linear-gradient(to right, blue, purple);
   text-align: left;
+  z-index: 10;
   a {
     border-bottom: 1px solid transparent;
     font-weight: bold;

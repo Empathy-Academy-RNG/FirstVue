@@ -1,7 +1,7 @@
 <template>
   <div class="facets-main-panel">
-    <MediaTypeFacet></MediaTypeFacet>
     <GenreFacet></GenreFacet>
+    <MediaTypeFacet></MediaTypeFacet>
     <YearFacet></YearFacet>
   </div>
 </template>
@@ -21,11 +21,14 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .facets-main-panel {
   display: inline;
   float: left;
   width: 15%;
   overflow: hidden;
+}
+.number-facets {
+  color: white;
 }
 </style>

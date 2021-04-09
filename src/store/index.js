@@ -9,7 +9,10 @@ export default new Vuex.Store({
     selectedMovieIndex: -1,
     mediaTypes: [],
     genres: [],
-    years: []
+    years: [],
+    selectedGenreFacets: [],
+    selectedMediaTypeFacets: [],
+    selectedYearFacets: []
   },
   mutations: {
     setMovies(state, moviesToAdd) {
@@ -24,21 +27,21 @@ export default new Vuex.Store({
     setMediaTypes(state, typesToAdd) {
       const mediaTypeKeys = [];
       for (const key in typesToAdd) {
-        mediaTypeKeys.push(key);
+        mediaTypeKeys.push([key, typesToAdd[key]]);
       }
       state.mediaTypes = mediaTypeKeys;
     },
     setGenres(state, genresToAdd) {
       const genreKeys = [];
       for (const key in genresToAdd) {
-        genreKeys.push(key);
+        genreKeys.push([key, genresToAdd[key]]);
       }
       state.genres = genreKeys;
     },
     setYears(state, yearsToAdd) {
       const yearKeys = [];
       for (const key in yearsToAdd) {
-        yearKeys.push(key);
+        yearKeys.push([key, yearsToAdd[key]]);
       }
       state.years = yearKeys;
     }
