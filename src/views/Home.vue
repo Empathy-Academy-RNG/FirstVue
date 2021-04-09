@@ -1,6 +1,7 @@
 <template>
   <div>
     <SearchBox v-on:search-change="searchRequest"></SearchBox>
+    <Facets></Facets>
     <MovieList
       v-bind:initial-search-status="initialSearchStatus"
       v-on:search-again="searchRequest"
@@ -11,6 +12,7 @@
 <script lang="ts">
 import SearchBox from "../components/SearchBox";
 import MovieList from "../components/MovieList.vue";
+import Facets from "../components/facets/Facets.vue";
 //import MoviesInterface from "../models/interfaces.ts";
 
 export default {
@@ -24,6 +26,7 @@ export default {
       setTimeout(() => controller.abort(), 6000);
       if (textToSearch) {
         this.currentTextSearch = textToSearch;
+        this.$store.commit("setTextToSearch", this.currentTextSearch);
       }
       try {
         const response = await fetch(
@@ -32,6 +35,10 @@ export default {
         );
         const searchDataRetrieved = await response.json();
         this.$store.commit("setMovies", searchDataRetrieved.items);
+        const aggregationsForFacets = searchDataRetrieved.aggregations;
+        this.$store.commit("setMediaTypes", aggregationsForFacets.types);
+        this.$store.commit("setGenres", aggregationsForFacets.genres);
+        this.$store.commit("setYears", aggregationsForFacets.year);
         this.selectedMovieData = null;
         this.initialSearchStatus = true;
       } catch (err) {
@@ -56,7 +63,8 @@ export default {
   },
   components: {
     SearchBox: SearchBox,
-    MovieList: MovieList
+    MovieList: MovieList,
+    Facets: Facets
   }
 };
 </script>

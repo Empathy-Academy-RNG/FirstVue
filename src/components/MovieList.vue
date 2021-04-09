@@ -56,7 +56,6 @@ export default {
   },
   data: function() {
     return {
-      allTextSearch: "",
       currentTextSearch: ""
     };
   }
@@ -64,12 +63,13 @@ export default {
 </script>
 <style scoped>
 .main-list-container {
-  width: 100%;
+  width: 85%;
+  float: right;
 }
 
 #list-of-movies {
   width: 100%;
-  text-align: center;
+  text-align: left;
 }
 
 #search-fail-panel {

@@ -29,7 +29,7 @@ export default {
 input {
   display: block;
   padding: 20px;
-  width: 20em;
+  width: 26em;
   border: 1px solid black;
   margin: 100px auto;
   font-size: 1.5em;
@@ -37,7 +37,7 @@ input {
 }
 input:focus {
   border: 1px solid white;
-  width: 26em;
+  width: 32em;
 }
 
 input:focus::placeholder {
