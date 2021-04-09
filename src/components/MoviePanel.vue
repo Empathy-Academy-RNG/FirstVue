@@ -21,8 +21,8 @@
           <span v-else> ongoing </span>
         </h2>
         <h2 data-test="movie-rating">
-          {{ selectedMovieData.averageRating }}/10 out of
-          {{ selectedMovieData.votes }} votes
+          {{ selectedMovieData.average_rating }}/10 out of
+          {{ selectedMovieData.num_votes }} votes
         </h2>
         <h3>Genres:</h3>
         <ul>
