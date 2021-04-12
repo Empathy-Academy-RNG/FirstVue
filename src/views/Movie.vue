@@ -14,13 +14,10 @@ export default {
   },
   methods: {
     async specificMovieRequest(idOfMovieRequested) {
-      console.log("entrando en específico");
-      console.log(idOfMovieRequested);
       try {
         const requestAddr =
           "http://localhost:8080/titles/" + idOfMovieRequested;
         const response = await fetch(requestAddr);
-
         return await response.json();
       } catch (err) {
         if (err.name === "AbortError") {

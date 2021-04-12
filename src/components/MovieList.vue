@@ -6,20 +6,14 @@
       data-test="list-of-movies"
     >
       <ul id="main-list-movies">
-        <li
+        <MovieListComponent
           class="movie-list-element"
           v-for="(movie, index) in $store.state.movies"
           :key="movie.id"
           data-test="movie-list-item"
+          v-bind:movie-data="$store.state.movies[index]"
         >
-          <a
-            class="movie-list-link"
-            @click.prevent="sendToMovie(index)"
-            href=""
-            data-test="movie-list-link"
-            >{{ movie.title }} ({{ movie.start_year }})</a
-          >
-        </li>
+        </MovieListComponent>
       </ul>
     </div>
     <div v-if="!initialSearchStatus" id="search-fail-panel">
@@ -37,10 +31,13 @@
 </template>
 
 <script>
+import MovieListComponent from "@/components/MovieListComponent";
 export default {
   name: "MovieList",
+  components: { MovieListComponent },
   props: ["movies", "initialSearchStatus"],
   async created() {
+    await this.$store.commit("removeAllFacets");
     this.$emit("search-again");
   },
   methods: {
@@ -52,26 +49,6 @@ export default {
     },
     emitSearchRequest() {
       this.$emit("search-again");
-    },
-    getMoviePoster: async function(idForPoster) {
-      console.log("retrieving poster for");
-      console.log(idForPoster);
-      try {
-        const posterDataResponse = await fetch(
-          "http://omdbapi.com/?apikey=7fd77710&i=" + idForPoster
-        );
-        let posterUrl = await posterDataResponse.json();
-        console.log(posterUrl.Poster);
-        return await posterUrl.Poster;
-      } catch (err) {
-        if (err.name === "Abort error") {
-          console.log("Request aborted due to timeout");
-        }
-        console.log(
-          "An error occurred while trying to access the movie data: " +
-            err.toString()
-        );
-      }
     }
   },
   data: function() {
@@ -90,6 +67,7 @@ export default {
 #list-of-movies {
   width: 100%;
   text-align: left;
+  margin-top: -50px;
 }
 
 #search-fail-panel {
@@ -124,27 +102,6 @@ export default {
 ul {
   text-align: center;
   padding-left: 0;
-}
-
-li.movie-list-element {
-  list-style: none;
-  padding: 20px;
-  font-size: 1.25em;
-  height: 100px;
-}
-
-a.movie-list-link {
-  text-decoration: none;
-  font-size: 1em;
-  padding: 24px;
-  color: white;
-  line-height: 2px;
-}
-
-a.movie-list-link:hover {
-  background-color: white;
-  color: black;
-  animation: animBackgroundColor 0.4s ease-in-out;
 }
 
 @keyframes animBackgroundColor {

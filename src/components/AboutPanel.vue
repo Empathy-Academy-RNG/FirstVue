@@ -2,12 +2,12 @@
   <div class="about">
     <h1>Origin</h1>
     <p>
-      This page is a project done by Raúl Núñez García while enrolled in the
-      Empathy Academy.
+      This page is a project done by Raúl Núñez García, María Flórez Miranda and
+      Ricardo Soto Estévez while enrolled as interns in the Empathy Academy.
     </p>
     <p>
-      It is meant to showcase the concepts learned during the Front-end path of
-      the Academy, mainly related with Vue and other web technologies.
+      It is meant to showcase the concepts learned during the Front-end and
+      Search paths.
     </p>
     <img src="../assets/empathy-logo.gif" alt="Logo of Empathy.co" />
   </div>

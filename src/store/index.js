@@ -78,6 +78,11 @@ export default new Vuex.Store({
       tempFacets.splice(indexToRemove, 1);
       state.selectedMediaTypeFacets = tempFacets;
     },
+    removeAllFacets(state) {
+      state.selectedGenreFacets = [];
+      state.selectedMediaTypeFacets = [];
+      state.selectedYearFacets = [];
+    },
     getParsedGenreFacets(state) {
       if (state.selectedGenreFacets.length === 0) {
         state.parsedGenreFacets = "";
@@ -107,42 +112,18 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    async movieRequestWithFacets({ commit }, facetsToInclude) {
-      try {
-        const requestAddr =
-          "http://localhost:8080/search?query=" +
-          this.state.currentTextSearch +
-          facetsToInclude.facetsToInclude;
-        const response = await fetch(requestAddr);
-        const searchDataRetrieved = await response.json();
-        commit("setMovies", searchDataRetrieved.items);
-        const aggregationsForFacets = searchDataRetrieved.aggregations;
-        commit("setMediaTypes", aggregationsForFacets.types);
-        commit("setGenres", aggregationsForFacets.genres);
-        commit("setYears", aggregationsForFacets.year);
-      } catch (err) {
-        if (err.name === "AbortError") {
-          console.log("Request aborted due to timeout");
-        }
-        console.log(
-          "An error occurred while accessing the search data: " + err.toString()
-        );
-      }
-    },
     async movieRequest({ commit }) {
       try {
         commit("getParsedGenreFacets");
         commit("getParsedMediaTypeFacets");
         commit("getParsedYearFacets");
-        console.log(this.state.parsedGenreFacets);
-        console.log(this.state.parsedMediaTypeFacets);
-        console.log(this.state.parsedYearFacets);
         const requestAddr =
           "http://localhost:8080/search?query=" +
           this.state.currentTextSearch +
           this.state.parsedGenreFacets +
           this.state.parsedMediaTypeFacets +
           this.state.parsedYearFacets;
+        console.log("API request: " + requestAddr);
         const response = await fetch(requestAddr);
         const searchDataRetrieved = await response.json();
         commit("setMovies", searchDataRetrieved.items);
@@ -158,12 +139,6 @@ export default new Vuex.Store({
           "An error occurred while accessing the search data: " + err.toString()
         );
       }
-    },
-    sendToMovie(indexOfMovie) {
-      this.$router.push({
-        name: "Movie",
-        params: { movieId: this.$store.state.movies[indexOfMovie].id }
-      });
     }
   }
 });

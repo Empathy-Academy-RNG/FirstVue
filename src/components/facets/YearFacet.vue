@@ -26,7 +26,8 @@ export default {
   name: "YearFacet",
   methods: {
     yearFacetChanged: function(event) {
-      const yearsTextFormatted = event.target.value.split("-").join("/");
+      let yearsTextFormatted = event.target.value.split("-").join("/");
+      yearsTextFormatted = yearsTextFormatted.replace("*", "2022");
       if (event.target.checked) {
         this.$store.commit("setSelectedYearFacets", yearsTextFormatted);
       } else {

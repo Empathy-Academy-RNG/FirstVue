@@ -7,18 +7,18 @@
         :key="selectedMovieData.id"
         data-test="movie-panel"
       >
-        <!--:style="{
-          'background-image': 'url(\'' + selectedMovieData.posterUrl + '\')'
-        }"
-        -->
-
         <h1 data-test="movie-title">{{ selectedMovieData.title }} <br /></h1>
         <h2 data-test="movie-years">
-          {{ selectedMovieData.type }}: {{ selectedMovieData.start_year }} -
-          <span v-if="selectedMovieData.end_year">{{
-            selectedMovieData.end_year
-          }}</span>
-          <span v-else> ongoing </span>
+          {{ selectedMovieData.type }}: {{ selectedMovieData.start_year }}
+          <span
+            v-if="
+              selectedMovieData.end_year && selectedMovieData.type !== 'movie'
+            "
+            >{{ " - " + selectedMovieData.end_year }}</span
+          >
+          <span v-else-if="selectedMovieData.type.toLowerCase() !== 'tvseries'">
+          </span>
+          <span v-else> - ongoing </span>
         </h2>
         <h2 data-test="movie-rating">
           {{ selectedMovieData.average_rating }}/10 out of

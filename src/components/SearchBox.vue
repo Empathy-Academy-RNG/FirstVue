@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="search-box-container">
     <input
       @keyup="onSearchChange"
       type="search"
