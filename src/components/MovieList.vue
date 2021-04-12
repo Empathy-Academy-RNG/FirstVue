@@ -52,6 +52,26 @@ export default {
     },
     emitSearchRequest() {
       this.$emit("search-again");
+    },
+    getMoviePoster: async function(idForPoster) {
+      console.log("retrieving poster for");
+      console.log(idForPoster);
+      try {
+        const posterDataResponse = await fetch(
+          "http://omdbapi.com/?apikey=7fd77710&i=" + idForPoster
+        );
+        let posterUrl = await posterDataResponse.json();
+        console.log(posterUrl.Poster);
+        return await posterUrl.Poster;
+      } catch (err) {
+        if (err.name === "Abort error") {
+          console.log("Request aborted due to timeout");
+        }
+        console.log(
+          "An error occurred while trying to access the movie data: " +
+            err.toString()
+        );
+      }
     }
   },
   data: function() {

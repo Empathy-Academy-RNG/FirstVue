@@ -7,7 +7,7 @@
       :key="index"
     >
       <input
-        type="radio"
+        type="checkbox"
         id="'radio-genre-' + index"
         name="mediaType"
         :value="genre"
@@ -26,11 +26,13 @@ export default {
   name: "GenreFacet",
   methods: {
     genreFacetChanged: function(event) {
-      const genreFacet = "&genres=" + event.target.value.toLowerCase();
-      console.log(genreFacet);
-      this.$store.dispatch("movieRequestWithFacets", {
-        facetsToInclude: genreFacet
-      });
+      let genreChanged = event.target.value;
+      if (event.target.checked) {
+        this.$store.commit("setSelectedGenreFacets", genreChanged);
+      } else {
+        this.$store.commit("removeGenreFacet", genreChanged);
+      }
+      this.$store.dispatch("movieRequest");
     }
   }
 };

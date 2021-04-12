@@ -7,11 +7,11 @@
       :key="index"
     >
       <input
-        type="radio"
+        type="checkbox"
         id="'radio-years-' + index"
         name="mediaType"
         :value="decade"
-        @click="yearFacetChanged"
+        @click="yearFacetChanged($event)"
       />
       <label :for="'radio-years-' + index" class="radio-custom-label">{{
         decade[0]
@@ -27,10 +27,12 @@ export default {
   methods: {
     yearFacetChanged: function(event) {
       const yearsTextFormatted = event.target.value.split("-").join("/");
-      const yearFacet = "&year=" + yearsTextFormatted;
-      this.$store.dispatch("movieRequestWithFacets", {
-        facetsToInclude: yearFacet
-      });
+      if (event.target.checked) {
+        this.$store.commit("setSelectedYearFacets", yearsTextFormatted);
+      } else {
+        this.$store.commit("removeYearFacet", yearsTextFormatted);
+      }
+      this.$store.dispatch("movieRequest");
     }
   }
 };

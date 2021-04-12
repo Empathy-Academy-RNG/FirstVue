@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
+
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -12,7 +13,10 @@ export default new Vuex.Store({
     years: [],
     selectedGenreFacets: [],
     selectedMediaTypeFacets: [],
-    selectedYearFacets: []
+    selectedYearFacets: [],
+    parsedGenreFacets: "",
+    parsedMediaTypeFacets: "",
+    parsedYearFacets: ""
   },
   mutations: {
     setMovies(state, moviesToAdd) {
@@ -44,6 +48,62 @@ export default new Vuex.Store({
         yearKeys.push([key, yearsToAdd[key]]);
       }
       state.years = yearKeys;
+    },
+    setSelectedGenreFacets(state, facetsToAdd) {
+      state.selectedGenreFacets.push(facetsToAdd);
+    },
+    setSelectedMediaTypeFacets(state, facetsToAdd) {
+      state.selectedMediaTypeFacets.push(facetsToAdd);
+    },
+    setSelectedYearFacets(state, facetsToAdd) {
+      state.selectedYearFacets.push(facetsToAdd);
+    },
+    removeGenreFacet(state, facetToRemove) {
+      const indexToRemove = state.selectedGenreFacets.indexOf(facetToRemove);
+      let tempFacets = state.selectedGenreFacets;
+      tempFacets.splice(indexToRemove, 1);
+      state.selectedGenreFacets = tempFacets;
+    },
+    removeYearFacet(state, facetToRemove) {
+      const indexToRemove = state.selectedYearFacets.indexOf(facetToRemove);
+      let tempFacets = state.selectedYearFacets;
+      tempFacets.splice(indexToRemove, 1);
+      state.selectedYearFacets = tempFacets;
+    },
+    removeMediaTypeFacet(state, facetToRemove) {
+      const indexToRemove = state.selectedMediaTypeFacets.indexOf(
+        facetToRemove
+      );
+      let tempFacets = state.selectedMediaTypeFacets;
+      tempFacets.splice(indexToRemove, 1);
+      state.selectedMediaTypeFacets = tempFacets;
+    },
+    getParsedGenreFacets(state) {
+      if (state.selectedGenreFacets.length === 0) {
+        state.parsedGenreFacets = "";
+        return;
+      }
+      state.parsedGenreFacets =
+        "&genres=" +
+        state.selectedGenreFacets.map(genre => genre.split(",")[0]).join(",");
+    },
+    getParsedMediaTypeFacets(state) {
+      if (state.selectedMediaTypeFacets.length === 0) {
+        state.parsedMediaTypeFacets = "";
+        return;
+      }
+      state.parsedMediaTypeFacets =
+        "&type=" +
+        state.selectedMediaTypeFacets.map(type => type.split(",")[0]).join(",");
+    },
+    getParsedYearFacets(state) {
+      if (state.selectedYearFacets.length === 0) {
+        state.parsedYearFacets = "";
+        return;
+      }
+      state.parsedYearFacets =
+        "&year=" +
+        state.selectedYearFacets.map(decade => decade.split(",")[0]).join(",");
     }
   },
   actions: {
@@ -68,6 +128,42 @@ export default new Vuex.Store({
           "An error occurred while accessing the search data: " + err.toString()
         );
       }
+    },
+    async movieRequest({ commit }) {
+      try {
+        commit("getParsedGenreFacets");
+        commit("getParsedMediaTypeFacets");
+        commit("getParsedYearFacets");
+        console.log(this.state.parsedGenreFacets);
+        console.log(this.state.parsedMediaTypeFacets);
+        console.log(this.state.parsedYearFacets);
+        const requestAddr =
+          "http://localhost:8080/search?query=" +
+          this.state.currentTextSearch +
+          this.state.parsedGenreFacets +
+          this.state.parsedMediaTypeFacets +
+          this.state.parsedYearFacets;
+        const response = await fetch(requestAddr);
+        const searchDataRetrieved = await response.json();
+        commit("setMovies", searchDataRetrieved.items);
+        const aggregationsForFacets = searchDataRetrieved.aggregations;
+        commit("setMediaTypes", aggregationsForFacets.types);
+        commit("setGenres", aggregationsForFacets.genres);
+        commit("setYears", aggregationsForFacets.year);
+      } catch (err) {
+        if (err.name === "AbortError") {
+          console.log("Request aborted due to timeout");
+        }
+        console.log(
+          "An error occurred while accessing the search data: " + err.toString()
+        );
+      }
+    },
+    sendToMovie(indexOfMovie) {
+      this.$router.push({
+        name: "Movie",
+        params: { movieId: this.$store.state.movies[indexOfMovie].id }
+      });
     }
   }
 });

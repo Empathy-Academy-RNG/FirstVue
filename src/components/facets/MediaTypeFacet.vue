@@ -7,7 +7,7 @@
       :key="index"
     >
       <input
-        type="radio"
+        type="checkbox"
         id="'radio-type-' + index"
         name="mediaType"
         :value="mediaType"
@@ -26,11 +26,13 @@ export default {
   name: "MediaTypeFacet",
   methods: {
     mediaTypeFacetChanged: function(event) {
-      const typeFacet = "&type=" + event.target.value.toLowerCase();
-      console.log(typeFacet);
-      this.$store.dispatch("movieRequestWithFacets", {
-        facetsToInclude: typeFacet
-      });
+      let mediaTypeChanged = event.target.value;
+      if (event.target.checked) {
+        this.$store.commit("setSelectedMediaTypeFacets", mediaTypeChanged);
+      } else {
+        this.$store.commit("removeMediaTypeFacet", mediaTypeChanged);
+      }
+      this.$store.dispatch("movieRequest");
     }
   }
 };

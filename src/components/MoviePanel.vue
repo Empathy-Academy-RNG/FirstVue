@@ -25,7 +25,7 @@
           {{ selectedMovieData.num_votes }} votes
         </h2>
         <h3>Genres:</h3>
-        <ul>
+        <ul class="genre-list-container">
           <li
             class="genre-list-element"
             v-for="(genre, index) in selectedMovieData.genres"
@@ -84,6 +84,10 @@ export default {
 .movie-panel-content h1 {
   font-size: 2.5em;
   text-transform: uppercase;
+}
+
+.genre-list-container {
+  padding-left: 0;
 }
 
 li {

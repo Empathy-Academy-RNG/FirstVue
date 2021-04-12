@@ -22,35 +22,11 @@ export default {
   },
   methods: {
     searchRequest: async function(textToSearch) {
-      let controller = new AbortController();
-      setTimeout(() => controller.abort(), 6000);
       if (textToSearch) {
         this.currentTextSearch = textToSearch;
         this.$store.commit("setTextToSearch", this.currentTextSearch);
       }
-      try {
-        const response = await fetch(
-          "http://localhost:8080/search?query=" + this.currentTextSearch,
-          { signal: controller.signal }
-        );
-        const searchDataRetrieved = await response.json();
-        this.$store.commit("setMovies", searchDataRetrieved.items);
-        const aggregationsForFacets = searchDataRetrieved.aggregations;
-        this.$store.commit("setMediaTypes", aggregationsForFacets.types);
-        this.$store.commit("setGenres", aggregationsForFacets.genres);
-        this.$store.commit("setYears", aggregationsForFacets.year);
-        this.selectedMovieData = null;
-        this.initialSearchStatus = true;
-      } catch (err) {
-        if (err.name === "AbortError") {
-          console.log("Request aborted due to timeout");
-        }
-        console.log(
-          "An error occurred while accessing the search data: " + err.toString()
-        );
-        this.initialSearchStatus = false;
-        this.selectedMovieData = -1;
-      }
+      await this.$store.dispatch("movieRequest");
     }
   },
   data: function() {
