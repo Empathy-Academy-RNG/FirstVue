@@ -27,7 +27,7 @@
           "
         >
           {{ selectedMovieData.average_rating }}/10 out of
-          {{ selectedMovieData.average_rating }} votes
+          {{ selectedMovieData.num_votes }} votes
         </h2>
         <h2 data-test="movie-runtime" v-if="selectedMovieData.runtime_minutes">
           Runtime: {{ selectedMovieData.runtime_minutes }} mins.
@@ -135,13 +135,13 @@ li {
 
 @media (max-height: 1000px) {
   .movie-poster-image {
-    width: 10em;
+    width: 15em;
   }
   .movie-panel-content h1 {
-    font-size: 1.2em;
+    font-size: 1.4em;
   }
   .movie-panel-content h2 {
-    font-size: 1em;
+    font-size: 1.2em;
   }
   .movie-panel-content h3 {
     font-size: 0.8em;

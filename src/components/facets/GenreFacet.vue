@@ -8,12 +8,13 @@
     >
       <input
         type="checkbox"
-        id="'radio-genre-' + index"
-        name="mediaType"
+        id="'checkbox-genre-' + index"
+        name="genre"
         :value="genre"
         @click="genreFacetChanged"
+        v-model="selected"
       />
-      <label :for="'radio-genre-' + index" class="radio-custom-label">{{
+      <label :for="'checkbox-genre-' + index" class="checkbox-custom-label">{{
         genre[0]
       }}</label>
       <span class="number-facets"> ({{ genre[1] }})</span>
@@ -24,6 +25,11 @@
 <script>
 export default {
   name: "GenreFacet",
+  data: function() {
+    return {
+      selected: [this.$store.state.genres]
+    };
+  },
   methods: {
     genreFacetChanged: function(event) {
       let genreChanged = event.target.value;
@@ -33,6 +39,14 @@ export default {
         this.$store.commit("removeGenreFacet", genreChanged);
       }
       this.$store.dispatch("movieRequest");
+    },
+    clearFacets: function() {
+      for (let i = 0; i < this.$store.state.genres.length; i++) {
+        let indexToRemove = this.$data.selected.indexOf(
+          this.$store.state.genres[i]
+        );
+        this.$data.selected.splice(indexToRemove, 1);
+      }
     }
   }
 };

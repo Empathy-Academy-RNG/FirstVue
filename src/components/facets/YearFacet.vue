@@ -12,8 +12,9 @@
         name="mediaType"
         :value="decade"
         @click="yearFacetChanged($event)"
+        v-model="selected"
       />
-      <label :for="'radio-years-' + index" class="radio-custom-label">{{
+      <label :for="'checkbox-years-' + index" class="checkbox-custom-label">{{
         decade[0]
       }}</label>
       <span class="number-facets"> ({{ decade[1] }})</span>
@@ -24,6 +25,11 @@
 <script>
 export default {
   name: "YearFacet",
+  data: function() {
+    return {
+      selected: [this.$store.state.years]
+    };
+  },
   methods: {
     yearFacetChanged: function(event) {
       let yearsTextFormatted = event.target.value.split("-").join("/");
@@ -34,6 +40,14 @@ export default {
         this.$store.commit("removeYearFacet", yearsTextFormatted);
       }
       this.$store.dispatch("movieRequest");
+    },
+    clearFacets: function() {
+      for (let i = 0; i < this.$store.state.years.length; i++) {
+        let indexToRemove = this.$data.selected.indexOf(
+          this.$store.state.years[i]
+        );
+        this.$data.selected.splice(indexToRemove, 1);
+      }
     }
   }
 };

@@ -8,12 +8,13 @@
     >
       <input
         type="checkbox"
-        id="'radio-type-' + index"
+        id="'checkbox-type-' + index"
         name="mediaType"
         :value="mediaType"
         @click="mediaTypeFacetChanged"
+        v-model="selected"
       />
-      <label :for="'radio-type-' + index" class="radio-custom-label">{{
+      <label :for="'checkbox-type-' + index" class="checkbox-custom-label">{{
         mediaType[0]
       }}</label>
       <span class="number-facets"> ({{ mediaType[1] }})</span>
@@ -24,6 +25,11 @@
 <script>
 export default {
   name: "MediaTypeFacet",
+  data: function() {
+    return {
+      selected: [this.$store.state.mediaTypes]
+    };
+  },
   methods: {
     mediaTypeFacetChanged: function(event) {
       let mediaTypeChanged = event.target.value;
@@ -33,6 +39,14 @@ export default {
         this.$store.commit("removeMediaTypeFacet", mediaTypeChanged);
       }
       this.$store.dispatch("movieRequest");
+    },
+    clearFacets: function() {
+      for (let i = 0; i < this.$store.state.mediaTypes.length; i++) {
+        let indexToRemove = this.$data.selected.indexOf(
+          this.$store.state.mediaTypes[i]
+        );
+        this.$data.selected.splice(indexToRemove, 1);
+      }
     }
   }
 };
