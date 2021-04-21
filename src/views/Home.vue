@@ -1,11 +1,17 @@
 <template>
   <div>
     <Facets></Facets>
-    <SearchBox v-on:search-change="searchRequest"></SearchBox>
+    <SearchBox
+      ref="searchBoxRef"
+      v-on:search-change="searchRequest"
+    ></SearchBox>
     <MovieList
       v-bind:initial-search-status="initialSearchStatus"
       v-on:search-again="searchRequest"
     ></MovieList>
+    <SuggestionsPanel
+      v-on:suggestion-select="suggestionSearch"
+    ></SuggestionsPanel>
   </div>
 </template>
 
@@ -13,6 +19,7 @@
 import SearchBox from "../components/SearchBox";
 import MovieList from "../components/MovieList.vue";
 import Facets from "../components/facets/Facets.vue";
+import SuggestionsPanel from "../components/SuggestionsPanel.vue";
 //import MoviesInterface from "../models/interfaces.ts";
 
 export default {
@@ -27,6 +34,9 @@ export default {
         this.$store.commit("setTextToSearch", this.currentTextSearch);
       }
       await this.$store.dispatch("movieRequest");
+    },
+    suggestionSearch: async function(suggestionToSearch) {
+      this.$refs.searchBoxRef.searchBySuggestion(suggestionToSearch);
     }
   },
   data: function() {
@@ -40,7 +50,8 @@ export default {
   components: {
     SearchBox: SearchBox,
     MovieList: MovieList,
-    Facets: Facets
+    Facets: Facets,
+    SuggestionsPanel: SuggestionsPanel
   }
 };
 </script>

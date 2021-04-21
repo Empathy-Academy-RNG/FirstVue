@@ -16,7 +16,8 @@ export default new Vuex.Store({
     selectedYearFacets: [],
     parsedGenreFacets: "",
     parsedMediaTypeFacets: "",
-    parsedYearFacets: ""
+    parsedYearFacets: "",
+    currentSuggestions: []
   },
   mutations: {
     setMovies(state, moviesToAdd) {
@@ -57,6 +58,12 @@ export default new Vuex.Store({
     },
     setSelectedYearFacets(state, facetsToAdd) {
       state.selectedYearFacets.push(facetsToAdd);
+    },
+    setSuggestions(state, suggestions) {
+      state.currentSuggestions = suggestions;
+    },
+    clearSuggestions(state) {
+      state.currentSuggestions = [];
     },
     removeGenreFacet(state, facetToRemove) {
       const indexToRemove = state.selectedGenreFacets.indexOf(facetToRemove);
@@ -126,6 +133,14 @@ export default new Vuex.Store({
         console.log("API request: " + requestAddr);
         const response = await fetch(requestAddr);
         const searchDataRetrieved = await response.json();
+        if (searchDataRetrieved.total === 0) {
+          commit("setSuggestions", searchDataRetrieved.suggestions);
+          commit("setMovies", []);
+          commit("removeAllFacets");
+          return;
+        } else {
+          commit("clearSuggestions");
+        }
         commit("setMovies", searchDataRetrieved.items);
         const aggregationsForFacets = searchDataRetrieved.aggregations;
         commit("setMediaTypes", aggregationsForFacets.types);

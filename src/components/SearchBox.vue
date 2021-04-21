@@ -4,6 +4,7 @@
       @keyup="onSearchChange"
       type="search"
       placeholder="Search for a movie"
+      :value="suggestionString.suggestion"
     />
   </div>
 </template>
@@ -20,7 +21,19 @@ export default {
       setTimeout(function() {
         ref.sendRequestPetition(event.target.value);
       }, 700);
+    },
+    searchBySuggestion: function(suggestionText) {
+      console.log("on search with " + suggestionText);
+      this.$data.suggestionString.suggestion = suggestionText;
+      this.sendRequestPetition(suggestionText);
     }
+  },
+  data: function() {
+    return {
+      suggestionString: {
+        suggestion: ""
+      }
+    };
   }
 };
 </script>

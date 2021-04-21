@@ -20,10 +20,21 @@
           </span>
           <span v-else> - ongoing </span>
         </h2>
-        <h2 data-test="movie-rating">
+        <h2
+          data-test="movie-rating"
+          v-if="
+            selectedMovieData.average_rating && selectedMovieData.average_rating
+          "
+        >
           {{ selectedMovieData.average_rating }}/10 out of
-          {{ selectedMovieData.num_votes }} votes
+          {{ selectedMovieData.average_rating }} votes
         </h2>
+        <h2 data-test="movie-runtime" v-if="selectedMovieData.runtime_minutes">
+          Runtime: {{ selectedMovieData.runtime_minutes }} mins.
+        </h2>
+        <h3 data-test="movie-adult" v-if="selectedMovieData.is_adult === true">
+          Adult movie
+        </h3>
         <h3>Genres:</h3>
         <ul class="genre-list-container">
           <li
@@ -38,14 +49,14 @@
         <br />
         <img
           v-if="selectedMovieData.posterUrl"
-          v-bind:src="selectedMovieData.posterUrl"
+          :src="selectedMovieData.posterUrl"
           alt="Poster of the movie"
           class="movie-poster-image"
         />
         <img
           v-else
-          src="../assets/no-poster-image.png"
-          alt="No poster found placeholder image"
+          :src="this.$data.defaultPosterUrl"
+          alt="Default placeholder poster"
           class="no-movie-poster-image"
         />
       </div>
@@ -54,12 +65,16 @@
 </template>
 
 <script>
+import defaultPoster from "../assets/poster-not-loaded.png";
 export default {
   name: "MoviePanel",
   props: {
     selectedMovieData: {
       required: true
     }
+  },
+  data: function() {
+    return { defaultPosterUrl: defaultPoster };
   }
 };
 </script>
@@ -114,20 +129,8 @@ li {
 
 .no-movie-poster-image {
   margin-top: 40px;
-  filter: invert(1);
   width: 100px;
   padding: 0;
-}
-
-#movie-fail-panel {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 50%;
-  position: fixed;
-  top: 200px;
-  color: white;
 }
 
 @media (max-height: 1000px) {

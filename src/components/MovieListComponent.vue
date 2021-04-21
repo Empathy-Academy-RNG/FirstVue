@@ -11,7 +11,16 @@
         href=""
         data-test="movie-list-link"
       >
-        <img :src="this.$data.posterUrl" alt="Poster for the movie" />
+        <img
+          v-if="this.$data.posterUrl"
+          :src="this.$data.posterUrl"
+          alt="Poster for the movie"
+        />
+        <img
+          v-else
+          :src="this.$data.defaultUrl"
+          alt="Default poster for the movie"
+        />
         <span>{{ movieData.title }} ({{ movieData.start_year }})</span></a
       >
     </li>
@@ -24,7 +33,7 @@ export default {
   name: "MovieListComponent",
   props: ["movieData"],
   data: function() {
-    return { posterUrl: defaultPoster };
+    return { posterUrl: "", defaultUrl: defaultPoster };
   },
   created() {
     this.getMoviePoster(this.$props.movieData.id);
@@ -66,7 +75,7 @@ li.movie-list-element {
   font-size: 1.25em;
   height: 100px;
   margin: 40px auto;
-  width: 50%;
+  width: 70%;
   text-align: left;
 }
 

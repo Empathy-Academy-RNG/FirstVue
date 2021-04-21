@@ -36,11 +36,13 @@ export default {
           "http://omdbapi.com/?apikey=7fd77710&i=" + this.idSelected
         );
         const omdbDataRetrieved = await posterDataResponse.json();
-        this.$set(
-          this.selectedMovieData,
-          "posterUrl",
-          omdbDataRetrieved.Poster
-        );
+        if (omdbDataRetrieved.Poster !== "N/A") {
+          this.$set(
+            this.selectedMovieData,
+            "posterUrl",
+            omdbDataRetrieved.Poster
+          );
+        }
       } catch (err) {
         if (err.name === "Abort error") {
           console.log("Request aborted due to timeout");
