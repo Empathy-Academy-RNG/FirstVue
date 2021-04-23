@@ -17,7 +17,8 @@ export default new Vuex.Store({
     parsedGenreFacets: "",
     parsedMediaTypeFacets: "",
     parsedYearFacets: "",
-    currentSuggestions: []
+    currentSuggestions: [],
+    currentlySearching: false
   },
   mutations: {
     setMovies(state, moviesToAdd) {
@@ -64,6 +65,9 @@ export default new Vuex.Store({
     },
     clearSuggestions(state) {
       state.currentSuggestions = [];
+    },
+    setCurrentlySearching(state, isCurrentlySearching) {
+      state.currentlySearching = isCurrentlySearching;
     },
     removeGenreFacet(state, facetToRemove) {
       const indexToRemove = state.selectedGenreFacets.indexOf(facetToRemove);
@@ -124,6 +128,7 @@ export default new Vuex.Store({
         commit("getParsedGenreFacets");
         commit("getParsedMediaTypeFacets");
         commit("getParsedYearFacets");
+        commit("setCurrentlySearching", true);
         const requestAddr =
           "http://localhost:8080/search?query=" +
           this.state.currentTextSearch +
@@ -137,10 +142,12 @@ export default new Vuex.Store({
           commit("setSuggestions", searchDataRetrieved.suggestions);
           commit("setMovies", []);
           commit("removeAllFacets");
+          commit("setCurrentlySearching", false);
           return;
         } else {
           commit("clearSuggestions");
         }
+        commit("setCurrentlySearching", false);
         commit("setMovies", searchDataRetrieved.items);
         const aggregationsForFacets = searchDataRetrieved.aggregations;
         commit("setMediaTypes", aggregationsForFacets.types);

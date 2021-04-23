@@ -6,14 +6,16 @@
       data-test="list-of-movies"
     >
       <ul id="main-list-movies">
-        <MovieListComponent
-          class="movie-list-element"
-          v-for="(movie, index) in $store.state.movies"
-          :key="movie.id"
-          data-test="movie-list-item"
-          v-bind:movie-data="$store.state.movies[index]"
-        >
-        </MovieListComponent>
+        <transition-group name="fade">
+          <MovieListComponent
+            class="movie-list-element"
+            v-for="(movie, index) in $store.state.movies"
+            :key="movie.id"
+            data-test="movie-list-item"
+            v-bind:movie-data="$store.state.movies[index]"
+          >
+          </MovieListComponent>
+        </transition-group>
       </ul>
     </div>
     <div v-if="!initialSearchStatus" id="search-fail-panel">
@@ -67,7 +69,7 @@ export default {
 #list-of-movies {
   width: 100%;
   text-align: left;
-  margin-top: -50px;
+  margin-top: -200px;
 }
 
 #search-fail-panel {
@@ -104,6 +106,10 @@ ul {
   padding-left: 0;
 }
 
+#main-list-movies {
+  width: 100%;
+}
+
 @keyframes animBackgroundColor {
   from {
     background-color: transparent;
@@ -115,7 +121,7 @@ ul {
 
 @media (max-width: 1000px) {
   #list-of-movies {
-    width: 50%;
+    width: 70%;
     border: none;
   }
 }

@@ -27,8 +27,8 @@ export default {
   methods: {
     clearFacets() {
       this.$store.commit("removeAllFacets");
-      this.$store.dispatch("movieRequest");
       this.$emit("suggestion-clear");
+      this.$store.dispatch("movieRequest");
     }
   }
 };

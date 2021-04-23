@@ -5,6 +5,7 @@
       ref="searchBoxRef"
       v-on:search-change="searchRequest"
     ></SearchBox>
+    <Searching></Searching>
     <MovieList
       v-bind:initial-search-status="initialSearchStatus"
       v-on:search-again="searchRequest"
@@ -20,6 +21,7 @@ import SearchBox from "../components/SearchBox";
 import MovieList from "../components/MovieList.vue";
 import Facets from "../components/facets/Facets.vue";
 import SuggestionsPanel from "../components/SuggestionsPanel.vue";
+import Searching from "../components/Loading.vue";
 //import MoviesInterface from "../models/interfaces.ts";
 
 export default {
@@ -51,7 +53,8 @@ export default {
     SearchBox: SearchBox,
     MovieList: MovieList,
     Facets: Facets,
-    SuggestionsPanel: SuggestionsPanel
+    SuggestionsPanel: SuggestionsPanel,
+    Searching: Searching
   }
 };
 </script>

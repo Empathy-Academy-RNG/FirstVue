@@ -2,9 +2,9 @@
   <div class="media-type-facet-panel">
     <h3 class="facet-title">Media type</h3>
     <div
-      class="media-type-facet-container"
       v-for="(mediaType, index) in $store.state.mediaTypes"
       :key="index"
+      class="media-type-facet-container"
     >
       <input
         type="checkbox"
@@ -13,6 +13,7 @@
         :value="mediaType"
         @click="mediaTypeFacetChanged"
         v-model="selected"
+        :checked="checked"
       />
       <label :for="'checkbox-type-' + index" class="checkbox-custom-label">{{
         mediaType[0]
@@ -27,7 +28,8 @@ export default {
   name: "MediaTypeFacet",
   data: function() {
     return {
-      selected: [this.$store.state.mediaTypes]
+      selected: [this.$store.state.selectedMediaTypeFacets],
+      checked: [this.$store.state.selectedMediaTypeFacets]
     };
   },
   methods: {
@@ -48,6 +50,9 @@ export default {
         this.$data.selected.splice(indexToRemove, 1);
       }
     }
+  },
+  mounted() {
+    this.$data.checked = this.$store.state.selectedMediaTypeFacets;
   }
 };
 </script>

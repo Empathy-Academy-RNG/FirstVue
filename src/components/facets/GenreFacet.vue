@@ -13,6 +13,7 @@
         :value="genre"
         @click="genreFacetChanged"
         v-model="selected"
+        :checked="true"
       />
       <label :for="'checkbox-genre-' + index" class="checkbox-custom-label">{{
         genre[0]

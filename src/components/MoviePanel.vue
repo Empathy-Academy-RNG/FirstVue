@@ -47,18 +47,20 @@
           </li>
         </ul>
         <br />
-        <img
-          v-if="selectedMovieData.posterUrl"
-          :src="selectedMovieData.posterUrl"
-          alt="Poster of the movie"
-          class="movie-poster-image"
-        />
-        <img
-          v-else
-          :src="this.$data.defaultPosterUrl"
-          alt="Default placeholder poster"
-          class="no-movie-poster-image"
-        />
+        <transition name="fade-poster">
+          <img
+            v-if="selectedMovieData.posterUrl"
+            :src="selectedMovieData.posterUrl"
+            alt="Poster of the movie"
+            class="movie-poster-image"
+          />
+          <img
+            v-else
+            :src="this.$data.defaultPosterUrl"
+            alt="Default placeholder poster"
+            class="no-movie-poster-image"
+          />
+        </transition>
       </div>
     </transition>
   </div>
@@ -153,11 +155,19 @@ li {
 }
 
 /* TRANSITIONS */
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.6s;
+.fade-poster-enter-active,
+.fade-poster-leave-active {
+  transition: opacity 1s;
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+
+.fade-poster-enter-active,
+.fade-poster-leave-active {
+  transition: opacity 1s;
+}
+.fade-poster-enter, .fade-poster-leave-to /* .fade-poster-leave-active below version 2.1.8 */ {
   opacity: 0;
 }
 </style>

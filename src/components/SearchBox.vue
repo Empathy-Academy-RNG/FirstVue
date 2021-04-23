@@ -1,7 +1,7 @@
 <template>
   <div class="search-box-container">
     <input
-      @keyup="onSearchChange"
+      @input="onSearchChange"
       type="search"
       placeholder="Search for a movie"
       :value="suggestionString.suggestion"
@@ -10,20 +10,21 @@
 </template>
 
 <script>
+const _ = require("lodash");
 export default {
   name: "SearchBox",
   methods: {
     sendRequestPetition: function(textOfRequest) {
       this.$emit("search-change", textOfRequest);
     },
-    onSearchChange: function(event) {
-      const ref = this;
-      setTimeout(function() {
-        ref.sendRequestPetition(event.target.value);
-      }, 700);
-    },
+    onSearchChange: _.debounce(function(event) {
+      if (event.target.value === "") {
+        return;
+      }
+      console.log(event.target.value);
+      this.$emit("search-change", event.target.value);
+    }, 700),
     searchBySuggestion: function(suggestionText) {
-      console.log("on search with " + suggestionText);
       this.$data.suggestionString.suggestion = suggestionText;
       this.sendRequestPetition(suggestionText);
     }

@@ -1,6 +1,11 @@
 <template>
   <div class="suggestions-main-panel">
-    <div v-if="$store.state.currentSuggestions.length !== 0">
+    <div
+      v-if="
+        $store.state.currentSuggestions &&
+          $store.state.currentSuggestions.length !== 0
+      "
+    >
       <h2>Maybe you were trying to say...</h2>
       <ul>
         <li
@@ -11,6 +16,16 @@
           <a href="#" @click.prevent="onSuggestionClick">{{ suggestion }}</a>
         </li>
       </ul>
+    </div>
+    <div
+      v-else-if="
+        $store.state.movies.length === 0 && !$store.state.currentSuggestions
+      "
+    >
+      <h2>
+        There were no results or suggestions for your query, <br />
+        please try again
+      </h2>
     </div>
   </div>
 </template>
@@ -34,8 +49,13 @@ export default {
   color: white;
 }
 
+.suggestions-main-panel {
+  margin-top: -100px;
+}
+
 ul {
   text-align: center;
+  padding-left: 0;
 }
 
 li.suggestion-list-element {
