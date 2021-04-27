@@ -6,7 +6,13 @@
         this.$store.state.selectedMediaTypeFacets.length > 0 ||
         this.$store.state.selectedGenreFacets.length > 0
           ? '1'
-          : '0'
+          : '0',
+      pointer:
+        this.$store.state.selectedYearFacets.length > 0 ||
+        this.$store.state.selectedMediaTypeFacets.length > 0 ||
+        this.$store.state.selectedGenreFacets.length > 0
+          ? 'auto'
+          : 'none'
     }"
     class="facet-cleaner-main"
   >

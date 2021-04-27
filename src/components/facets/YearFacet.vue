@@ -12,7 +12,7 @@
         name="mediaType"
         :value="decade"
         @click="yearFacetChanged($event)"
-        v-model="selected"
+        :checked="checked.indexOf(decade[0].split(',')[0]) !== -1"
       />
       <label :for="'checkbox-years-' + index" class="checkbox-custom-label">{{
         decade[0]
@@ -27,27 +27,27 @@ export default {
   name: "YearFacet",
   data: function() {
     return {
-      selected: [this.$store.state.years]
+      checked: []
     };
   },
   methods: {
     yearFacetChanged: function(event) {
-      let yearsTextFormatted = event.target.value.split("-").join("/");
-      yearsTextFormatted = yearsTextFormatted.replace("*", "2022");
+      let yearChanged = event.target.value.split("-").join("/");
+      yearChanged = yearChanged.replace("*", "2022");
       if (event.target.checked) {
-        this.$store.commit("setSelectedYearFacets", yearsTextFormatted);
+        this.$store.commit("setSelectedYearFacets", yearChanged);
+        this.$data.checked.push(event.target.value.split(",")[0]);
       } else {
-        this.$store.commit("removeYearFacet", yearsTextFormatted);
+        this.$store.commit("removeYearFacet", yearChanged);
+        let indexToRemove = this.$data.checked.indexOf(
+          event.target.value.split(",")[0]
+        );
+        this.$data.checked.splice(indexToRemove, 1);
       }
       this.$store.dispatch("movieRequest");
     },
     clearFacets: function() {
-      for (let i = 0; i < this.$store.state.years.length; i++) {
-        let indexToRemove = this.$data.selected.indexOf(
-          this.$store.state.years[i]
-        );
-        this.$data.selected.splice(indexToRemove, 1);
-      }
+      this.$data.checked = [];
     }
   }
 };

@@ -12,8 +12,7 @@
         name="mediaType"
         :value="mediaType"
         @click="mediaTypeFacetChanged"
-        v-model="selected"
-        :checked="checked"
+        :checked="checked.indexOf(mediaType[0].split(',')[0]) !== -1"
       />
       <label :for="'checkbox-type-' + index" class="checkbox-custom-label">{{
         mediaType[0]
@@ -23,13 +22,12 @@
   </div>
 </template>
 
-<script>
+<script type="ts">
 export default {
   name: "MediaTypeFacet",
   data: function() {
     return {
-      selected: [this.$store.state.selectedMediaTypeFacets],
-      checked: [this.$store.state.selectedMediaTypeFacets]
+      checked: []
     };
   },
   methods: {
@@ -37,22 +35,19 @@ export default {
       let mediaTypeChanged = event.target.value;
       if (event.target.checked) {
         this.$store.commit("setSelectedMediaTypeFacets", mediaTypeChanged);
+        this.$data.checked.push(event.target.value.split(",")[0]);
       } else {
         this.$store.commit("removeMediaTypeFacet", mediaTypeChanged);
+        let indexToRemove = this.$data.checked.indexOf(
+          event.target.value.split(",")[0]
+        );
+        this.$data.checked.splice(indexToRemove, 1);
       }
       this.$store.dispatch("movieRequest");
     },
     clearFacets: function() {
-      for (let i = 0; i < this.$store.state.mediaTypes.length; i++) {
-        let indexToRemove = this.$data.selected.indexOf(
-          this.$store.state.mediaTypes[i]
-        );
-        this.$data.selected.splice(indexToRemove, 1);
-      }
+      this.$data.checked = [];
     }
-  },
-  mounted() {
-    this.$data.checked = this.$store.state.selectedMediaTypeFacets;
   }
 };
 </script>

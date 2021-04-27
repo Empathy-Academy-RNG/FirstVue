@@ -12,8 +12,7 @@
         name="genre"
         :value="genre"
         @click="genreFacetChanged"
-        v-model="selected"
-        :checked="true"
+        :checked="checked.indexOf(genre[0].split(',')[0]) !== -1"
       />
       <label :for="'checkbox-genre-' + index" class="checkbox-custom-label">{{
         genre[0]
@@ -28,7 +27,7 @@ export default {
   name: "GenreFacet",
   data: function() {
     return {
-      selected: [this.$store.state.genres]
+      checked: []
     };
   },
   methods: {
@@ -36,18 +35,18 @@ export default {
       let genreChanged = event.target.value;
       if (event.target.checked) {
         this.$store.commit("setSelectedGenreFacets", genreChanged);
+        this.$data.checked.push(event.target.value.split(",")[0]);
       } else {
         this.$store.commit("removeGenreFacet", genreChanged);
+        let indexToRemove = this.$data.checked.indexOf(
+          event.target.value.split(",")[0]
+        );
+        this.$data.checked.splice(indexToRemove, 1);
       }
       this.$store.dispatch("movieRequest");
     },
     clearFacets: function() {
-      for (let i = 0; i < this.$store.state.genres.length; i++) {
-        let indexToRemove = this.$data.selected.indexOf(
-          this.$store.state.genres[i]
-        );
-        this.$data.selected.splice(indexToRemove, 1);
-      }
+      this.$data.checked = [];
     }
   }
 };

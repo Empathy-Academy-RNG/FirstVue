@@ -13,6 +13,7 @@
       >
         <transition-group name="fade">
           <img
+            class="poster"
             v-if="this.$data.posterUrl"
             :src="this.$data.posterUrl"
             alt="Poster for the movie"
@@ -48,6 +49,7 @@ export default {
     return { posterUrl: "", defaultUrl: defaultPoster };
   },
   created() {
+    //TODO pasar el poster como prop al panel para reducir cargas !?
     this.getMoviePoster(this.$props.movieData.id);
   },
   methods: {
@@ -112,6 +114,9 @@ a.movie-list-link:hover {
 
 img {
   width: 100px;
+}
+
+img.poster {
   box-shadow: 2px 4px 12px purple;
 }
 
