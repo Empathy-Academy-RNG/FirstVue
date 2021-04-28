@@ -1,112 +1,110 @@
 <template>
-  <div class="movie-panel-main">
+  <div class="movie-panel-main" data-test="movie-panel-main">
     <transition name="fade">
       <div
         class="movie-panel-content"
-        v-if="selectedMovieData && selectedMovieData !== -1"
+        v-if="selectedMovieData"
         :key="selectedMovieData.id"
+        data-test="movie-panel"
       >
-        <h1>{{ selectedMovieData.title }} <br /></h1>
-        <h2>{{ selectedMovieData.type }}</h2>
-        <h2>
-          {{ selectedMovieData.startYear }} -
-          <span v-if="selectedMovieData.endYear">{{
-            selectedMovieData.endYear
-          }}</span>
-          <span v-else> ongoing </span>
+        <h1 data-test="movie-title">{{ selectedMovieData.title }} <br /></h1>
+        <h2 data-test="movie-years">
+          {{ selectedMovieData.type }}: {{ selectedMovieData.start_year }}
+          <span
+            v-if="
+              selectedMovieData.end_year && selectedMovieData.type !== 'movie'
+            "
+            >{{ " - " + selectedMovieData.end_year }}</span
+          >
+          <span v-else-if="selectedMovieData.type.toLowerCase() !== 'tvseries'">
+          </span>
+          <span v-else> - ongoing </span>
         </h2>
-        <h2>
-          {{ selectedMovieData.averageRating }}/10 out of
-          {{ selectedMovieData.votes }} votes
+        <h2
+          data-test="movie-rating"
+          v-if="
+            selectedMovieData.average_rating && selectedMovieData.average_rating
+          "
+        >
+          {{ selectedMovieData.average_rating }}/10 out of
+          {{ selectedMovieData.num_votes }} votes
         </h2>
-        <h2 v-if="selectedMovieData.posterUrl">
-          {{ selectedMovieData.votes }}
+        <h2 data-test="movie-runtime" v-if="selectedMovieData.runtime_minutes">
+          Runtime: {{ selectedMovieData.runtime_minutes }} mins.
         </h2>
+        <h3 data-test="movie-adult" v-if="selectedMovieData.is_adult === true">
+          Adult movie
+        </h3>
         <h3>Genres:</h3>
-        <ul>
+        <ul class="genre-list-container">
           <li
             class="genre-list-element"
             v-for="(genre, index) in selectedMovieData.genres"
             v-bind:key="index"
+            data-test="movie-genres"
           >
             {{ genre }}
           </li>
         </ul>
         <br />
-        <img
-          v-if="selectedMovieData.posterUrl"
-          v-bind:src="selectedMovieData.posterUrl"
-          alt="Poster of the movie"
-          class="movie-poster-image"
-        />
-        <img
-          v-else
-          src="../assets/no-poster-image.png"
-          alt="No poster found placeholder image"
-          class="no-movie-poster-image"
-        />
-      </div>
-      <div id="movie-fail-panel" v-else-if="selectedMovieData === -1">
-        <h2>There was an error trying to access the data, please try again.</h2>
-      </div>
-      <div v-else class="no-movie-selected-panel">
-        <h1>Select a movie to see the details</h1>
-        <br />
-        <img src="../assets/film.png" alt="Film placeholder image" />
+        <transition name="fade-poster">
+          <img
+            v-if="selectedMovieData.posterUrl"
+            :src="selectedMovieData.posterUrl"
+            alt="Poster of the movie"
+            class="movie-poster-image"
+          />
+          <img
+            v-else
+            :src="this.$data.defaultPosterUrl"
+            alt="Default placeholder poster"
+            class="no-movie-poster-image"
+          />
+        </transition>
       </div>
     </transition>
   </div>
 </template>
 
 <script>
+import defaultPoster from "../assets/poster-not-loaded.png";
 export default {
   name: "MoviePanel",
-  props: ["selectedMovieData"]
+  props: {
+    selectedMovieData: {
+      required: true
+    }
+  },
+  data: function() {
+    return { defaultPosterUrl: defaultPoster };
+  }
 };
 </script>
 
 <style scoped>
 .movie-panel-main {
-  height: 100vh;
-  width: 50%;
+  margin-top: 100px;
+  width: 100%;
   float: right;
   text-align: center;
 }
 
 .movie-panel-content {
-  width: 50%;
+  vertical-align: top;
+  width: 100%;
   filter: none;
   position: fixed;
   color: white;
-}
-
-.no-movie-selected-panel {
-  height: 50vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  position: fixed;
-  width: 50%;
-}
-
-.no-movie-selected-panel h1 {
-  display: table-cell;
-  vertical-align: middle;
-  margin: 0 auto;
-  color: white;
   text-align: center;
-  max-width: 50%;
 }
 
-.no-movie-selected-panel img {
-  margin-top: 100px;
-  width: 80px;
-  filter: invert(1);
+.movie-panel-content h1 {
+  font-size: 2.5em;
+  text-transform: uppercase;
 }
 
-ul {
-  padding: 0px;
+.genre-list-container {
+  padding-left: 0;
 }
 
 li {
@@ -117,7 +115,7 @@ li {
 .genre-list-element {
   border: 1px solid white;
   display: inline;
-  padding: 0.5em;
+  padding: 1.2em;
   margin: 10px;
 }
 
@@ -128,33 +126,48 @@ li {
 }
 
 .movie-poster-image {
-  width: 300px;
+  width: 22em;
 }
 
 .no-movie-poster-image {
   margin-top: 40px;
-  filter: invert(1);
   width: 100px;
   padding: 0;
 }
 
-#movie-fail-panel {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 50%;
-  position: fixed;
-  top: 200px;
-  color: white;
+@media (max-height: 1000px) {
+  .movie-poster-image {
+    width: 15em;
+  }
+  .movie-panel-content h1 {
+    font-size: 1.4em;
+  }
+  .movie-panel-content h2 {
+    font-size: 1.2em;
+  }
+  .movie-panel-content h3 {
+    font-size: 0.8em;
+  }
+  li {
+    padding: -5px;
+    font-size: 10px;
+  }
 }
 
 /* TRANSITIONS */
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.6s;
+.fade-poster-enter-active,
+.fade-poster-leave-active {
+  transition: opacity 1s;
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+
+.fade-poster-enter-active,
+.fade-poster-leave-active {
+  transition: opacity 1s;
+}
+.fade-poster-enter, .fade-poster-leave-to /* .fade-poster-leave-active below version 2.1.8 */ {
   opacity: 0;
 }
 </style>

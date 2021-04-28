@@ -6,5 +6,8 @@ module.exports = {
   },
   rules: {
     strict: "off"
+  },
+  parserOptions: {
+    parser: "@typescript-eslint/parser"
   }
 };
