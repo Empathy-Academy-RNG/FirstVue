@@ -22,7 +22,6 @@ import MovieList from "../components/MovieList.vue";
 import Facets from "../components/facets/Facets.vue";
 import SuggestionsPanel from "../components/SuggestionsPanel.vue";
 import Searching from "../components/Loading.vue";
-//import MoviesInterface from "../models/interfaces.ts";
 
 export default {
   name: "Home",

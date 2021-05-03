@@ -140,7 +140,6 @@ export default new Vuex.Store({
         const searchDataRetrieved = await response.json();
         if (searchDataRetrieved.total === 0) {
           commit("setSuggestions", searchDataRetrieved.suggestions);
-          console.log(searchDataRetrieved.suggestions);
           commit("setMovies", []);
           commit("removeAllFacets");
           commit("setCurrentlySearching", false);

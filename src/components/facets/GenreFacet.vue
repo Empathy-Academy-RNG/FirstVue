@@ -1,6 +1,23 @@
 <template>
-  <div class="genre-facet-panel">
-    <h3 class="facet-title">Genre</h3>
+  <div
+    class="genre-facet-panel"
+    :style="{
+      height: collapsed ? '80px' : '300px'
+    }"
+  >
+    <h3 class="facet-title">
+      Genre
+      <span class="collapse-facet-span"
+        ><img
+          src="../../assets/collapse.png"
+          class="collapse-facet-img"
+          alt=""
+          @click="collapseFacets"
+          :style="{
+            transform: collapsed ? 'scaleY(1)' : 'scaleY(-1)'
+          }"
+      /></span>
+    </h3>
     <div
       class="genre-facet-container"
       v-for="(genre, index) in $store.state.genres"
@@ -27,7 +44,8 @@ export default {
   name: "GenreFacet",
   data: function() {
     return {
-      checked: []
+      checked: [],
+      collapsed: false
     };
   },
   methods: {
@@ -47,6 +65,9 @@ export default {
     },
     clearFacets: function() {
       this.$data.checked = [];
+    },
+    collapseFacets: function() {
+      this.$data.collapsed = !this.$data.collapsed;
     }
   }
 };
@@ -74,12 +95,27 @@ export default {
   padding: 8px;
 }
 
+.collapse-facet-span {
+  padding-left: 20px;
+  position: absolute;
+  bottom: 1px;
+}
+
+.collapse-facet-img {
+  margin-left: 10px;
+  width: 40px;
+  display: inline;
+  filter: invert(100%);
+  cursor: pointer;
+}
+
 input {
   margin: 10px;
 }
 
 .genre-facet-container {
   margin-top: 30px;
+  overflow: hidden;
 }
 
 label {
