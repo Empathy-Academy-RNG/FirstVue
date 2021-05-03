@@ -89,7 +89,6 @@ li.movie-list-element {
   font-size: 1.25em;
   height: 100px;
   margin: 40px auto;
-  width: 100%;
   text-align: left;
 }
 
@@ -134,7 +133,6 @@ span.movie-title:after {
 span.movie-title:hover:after {
   width: 100%;
 }
-
 
 @keyframes animBackgroundColor {
   from {

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="main-home-container">
     <Facets></Facets>
     <SearchBox
       ref="searchBoxRef"
