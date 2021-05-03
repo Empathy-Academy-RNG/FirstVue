@@ -93,7 +93,6 @@ export default {
   vertical-align: top;
   width: 100%;
   filter: none;
-  position: fixed;
   color: white;
   text-align: center;
 }
