@@ -2,7 +2,8 @@
   <div
     class="year-facet-panel"
     :style="{
-      height: collapsed ? '80px' : '300px'
+      height: collapsed ? '40px' : '300px',
+      overflowY: collapsed ? 'hidden' : 'auto'
     }"
   >
     <h3 class="facet-title">
@@ -75,6 +76,10 @@ export default {
 </script>
 
 <style scoped>
+input[type="checkbox"] {
+  transform: scale(1.75);
+}
+
 .year-facet-panel {
   margin-top: 60px;
   width: 100%;
@@ -94,6 +99,7 @@ export default {
   margin: 0 auto 10px;
   background-color: rgb(13, 0, 242);
   padding: 8px;
+  z-index: 2;
 }
 
 .year-facet-container {
@@ -103,7 +109,7 @@ export default {
 .collapse-facet-span {
   padding-left: 20px;
   position: absolute;
-  bottom: 1px;
+  top: 2px;
 }
 
 .collapse-facet-img {

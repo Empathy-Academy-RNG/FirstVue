@@ -8,6 +8,9 @@
         data-test="movie-panel"
       >
         <h1 data-test="movie-title">{{ selectedMovieData.title }} <br /></h1>
+        <h2 v-if="selectedMovieData.original_title !== selectedMovieData.title">
+          ({{ selectedMovieData.original_title }})
+        </h2>
         <h2 data-test="movie-years">
           {{ selectedMovieData.type }}: {{ selectedMovieData.start_year }}
           <span
@@ -106,22 +109,23 @@ export default {
   padding-left: 0;
 }
 
+ul {
+  border: 1px solid white;
+  width: 300px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
 li {
   font-size: 12px;
   list-style: disc;
 }
 
 .genre-list-element {
-  border: 1px solid white;
   display: inline;
   padding: 1.2em;
   margin: 10px;
-}
-
-.genre-list-element:hover {
-  color: black;
-  background-color: white;
-  cursor: pointer;
+  font-size: 0.9em;
 }
 
 .movie-poster-image {
