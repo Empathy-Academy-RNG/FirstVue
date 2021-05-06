@@ -6,6 +6,7 @@
       placeholder="Search for a movie"
       :value="suggestionString.suggestion"
     />
+    <img class="search-box-image" src="../assets/search.png" alt="" />
   </div>
 </template>
 
@@ -17,11 +18,11 @@ export default {
     sendRequestPetition: function(textOfRequest) {
       this.$emit("search-change", textOfRequest);
     },
+    //Applying the debounce to the search here to avoid extra emits to the parent
     onSearchChange: _.debounce(function(event) {
       if (event.target.value === "") {
         return;
       }
-      console.log(event.target.value);
       this.$emit("search-change", event.target.value);
     }, 700),
     searchBySuggestion: function(suggestionText) {
@@ -41,7 +42,7 @@ export default {
 
 <style scoped>
 input {
-  display: block;
+  display: inline-block;
   padding: 20px;
   width: 26em;
   border: 1px solid black;
@@ -56,5 +57,23 @@ input:focus {
 
 input:focus::placeholder {
   color: transparent;
+}
+
+input:focus + img.search-box-image {
+  opacity: 0;
+}
+
+.search-box-image {
+  transition: opacity 0.3s ease-in-out;
+}
+
+.search-box-image {
+  filter: invert(100%);
+  width: 50px;
+  padding-left: 20px;
+  display: inline;
+  padding-top: 50px;
+  position: relative;
+  top: 1em;
 }
 </style>

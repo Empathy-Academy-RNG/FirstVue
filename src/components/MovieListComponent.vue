@@ -89,7 +89,6 @@ li.movie-list-element {
   font-size: 1.25em;
   height: 100px;
   margin: 40px auto;
-  width: 100%;
   text-align: left;
 }
 
@@ -104,20 +103,12 @@ a.movie-list-link {
   margin-left: 25%;
 }
 
-a.movie-list-link:hover {
-  /*
-  background-color: white;
-  color: black;
-  animation: animBackgroundColor 0.4s ease-in-out;
-  */
-}
-
 img {
   width: 100px;
 }
 
 img.poster {
-  box-shadow: 2px 4px 12px purple;
+  border: 2px solid transparent;
 }
 
 span.movie-title {

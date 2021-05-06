@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <div class="main-home-container">
     <Facets></Facets>
     <SearchBox
       ref="searchBoxRef"
       v-on:search-change="searchRequest"
     ></SearchBox>
-    <Searching></Searching>
+    <Loading></Loading>
     <MovieList
       v-bind:initial-search-status="initialSearchStatus"
       v-on:search-again="searchRequest"
@@ -21,8 +21,7 @@ import SearchBox from "../components/SearchBox";
 import MovieList from "../components/MovieList.vue";
 import Facets from "../components/facets/Facets.vue";
 import SuggestionsPanel from "../components/SuggestionsPanel.vue";
-import Searching from "../components/Loading.vue";
-//import MoviesInterface from "../models/interfaces.ts";
+import Loading from "../components/Loading.vue";
 
 export default {
   name: "Home",
@@ -54,7 +53,7 @@ export default {
     MovieList: MovieList,
     Facets: Facets,
     SuggestionsPanel: SuggestionsPanel,
-    Searching: Searching
+    Loading: Loading
   }
 };
 </script>

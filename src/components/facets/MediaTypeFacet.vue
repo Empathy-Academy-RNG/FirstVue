@@ -1,6 +1,24 @@
 <template>
-  <div class="media-type-facet-panel">
-    <h3 class="facet-title">Media type</h3>
+  <div
+    class="media-type-facet-panel"
+    :style="{
+      height: collapsed ? '40px' : '300px',
+      overflowY: collapsed ? 'hidden' : 'auto'
+    }"
+  >
+    <h3 class="facet-title">
+      Media type
+      <span class="collapse-facet-span"
+        ><img
+          src="../../assets/collapse.png"
+          class="collapse-facet-img"
+          alt=""
+          @click="collapseFacets"
+          :style="{
+            transform: collapsed ? 'scaleY(1)' : 'scaleY(-1)'
+          }"
+      /></span>
+    </h3>
     <div
       v-for="(mediaType, index) in $store.state.mediaTypes"
       :key="index"
@@ -27,7 +45,8 @@ export default {
   name: "MediaTypeFacet",
   data: function() {
     return {
-      checked: []
+      checked: [],
+      collapsed: false,
     };
   },
   methods: {
@@ -47,12 +66,19 @@ export default {
     },
     clearFacets: function() {
       this.$data.checked = [];
+    },
+    collapseFacets: function() {
+      this.$data.collapsed = !this.$data.collapsed;
     }
   }
 };
 </script>
 
 <style scoped>
+input[type="checkbox"] {
+  transform: scale(1.75);
+}
+
 .media-type-facet-panel {
   margin-top: 60px;
   width: 100%;
@@ -72,6 +98,7 @@ export default {
   margin: 0 auto 10px;
   background-color: rgb(13, 0, 242);
   padding: 8px;
+  z-index: 2;
 }
 
 .media-type-facet-container {
@@ -86,5 +113,18 @@ label {
   color: white;
   font-size: 1em;
   text-transform: capitalize;
+}
+
+.collapse-facet-span {
+  position: absolute;
+  top: 2px;
+}
+
+.collapse-facet-img {
+  margin-left: 10px;
+  width: 40px;
+  display: inline;
+  filter: invert(100%);
+  cursor: pointer;
 }
 </style>
