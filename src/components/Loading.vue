@@ -32,6 +32,8 @@ export default {
   stroke-linecap: round;
   stroke-linejoin: round;
   stroke-width: 10;
+  margin-top: -40px;
+  margin-bottom: 70px;
   &__spinner {
     transform-origin: 11px 11px;
   }

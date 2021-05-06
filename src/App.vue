@@ -34,7 +34,7 @@
     font-size: 1.5em;
     text-decoration: none;
     &.router-link-exact-active {
-      color: #42b983;
+      color: white;
       border-bottom: 1px solid white;
     }
   }

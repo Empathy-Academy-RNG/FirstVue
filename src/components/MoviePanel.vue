@@ -111,7 +111,7 @@ export default {
 
 ul {
   border: 1px solid white;
-  width: 300px;
+  width: 400px;
   margin: 0 auto;
   padding: 20px;
 }
