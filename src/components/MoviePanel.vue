@@ -57,13 +57,13 @@
             alt="Poster of the movie"
             class="movie-poster-image"
           />
-          <img
-            v-else
-            :src="this.$data.defaultPosterUrl"
-            alt="Default placeholder poster"
-            class="no-movie-poster-image"
-          />
         </transition>
+        <img
+          v-if="!selectedMovieData.posterUrl"
+          :src="this.$data.defaultPosterUrl"
+          alt="Default placeholder poster"
+          class="no-movie-poster-image"
+        />
       </div>
     </transition>
   </div>

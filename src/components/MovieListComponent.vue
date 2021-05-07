@@ -49,7 +49,6 @@ export default {
     return { posterUrl: "", defaultUrl: defaultPoster };
   },
   created() {
-    //TODO pasar el poster como prop al panel para reducir cargas !?
     this.getMoviePoster(this.$props.movieData.id);
   },
   methods: {
